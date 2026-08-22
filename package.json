@@ -1,0 +1,23 @@
+{
+    "name": "kanban-board",
+    "private": true,
+    "version": "1.0.0",
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+        "start": "npm run dev",
+        "lint": "eslint .",
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "build-docker-image": "./build-docker-image.sh"
+    },
+    "dependencies": {
+    },
+    "devDependencies": {
+        "eslint": "^10.3.0",
+        "@eslint/js": "^10.0.1",
+        "globals": "^17.6.0",
+        "vite": "^8.0.12"
+    }
+}

@@ -1,0 +1,1 @@
+docker build -t kubkol/kanban-board:@tag
