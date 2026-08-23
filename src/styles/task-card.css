@@ -1,0 +1,234 @@
+/* Task card: title, description, priority, badges, and the action footer */
+.task-card {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: var(--space-4);
+    cursor: grab;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    position: relative;
+    border-left: 4px solid transparent;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+/* Flex column items can overflow long unbroken text unless forced to
+   shrink - this is what caused the description text to spill past the
+   card in the main board view. */
+.task-card > * {
+    min-width: 0;
+}
+
+.task-id-row,
+.task-title-row,
+.task-secondary-row,
+.task-details,
+.task-actions-row {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(13, 17, 23, 0.35);
+    border-radius: 10px;
+    padding: var(--space-2) var(--space-3);
+}
+
+.task-id-row {
+    padding: 0.3rem 0.5rem;
+}
+.task-id-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 0;
+    font-family: 'SF Mono', 'Roboto Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    cursor: text;
+}
+.task-id-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.task-title-row {
+    display: flex;
+    align-items: center;
+}
+.task-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--text-color);
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* Description sits below the title, unboxed, with generous wrapping rules
+   so long text always stays inside the card. */
+.task-description {
+    padding: 0 var(--space-1);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--text-color);
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+/* Priority now lives on its own row underneath the description */
+.task-priority-row {
+    padding: 0 var(--space-1);
+    display: flex;
+}
+
+.task-secondary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-details {
+    display: grid;
+    gap: var(--space-2);
+}
+.task-card:not(.is-expanded) .task-details {
+    display: none;
+}
+
+.task-muted {
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+}
+
+.task-card.is-overdue {
+    border-left-color: #f87171;
+    box-shadow: 0 2px 10px rgba(248, 113, 113, 0.28);
+}
+.task-card.is-due-soon {
+    border-left-color: #fbbf24;
+    box-shadow: 0 2px 10px rgba(251, 191, 36, 0.24);
+}
+.task-card:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+    background: #21262d;
+    border-color: rgba(88, 166, 255, 0.3);
+}
+.task-card.is-overdue:hover {
+    border-left-color: #f87171;
+    background: rgba(218, 54, 51, 0.12);
+}
+.task-card.is-due-soon:hover {
+    border-left-color: #fbbf24;
+    background: rgba(210, 153, 34, 0.14);
+}
+.task-card.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+    box-shadow: none;
+    border: 2px dashed var(--primary-color);
+    background: transparent;
+}
+
+/* Badges */
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; margin-right: 4px; border: 1px solid rgba(255,255,255,0.1); }
+.badge-low { background: rgba(59, 130, 246, 0.12); color: #8ab8f5; }
+.badge-medium { background: rgba(245, 158, 11, 0.12); color: #e7c987; }
+.badge-high { background: rgba(239, 68, 68, 0.12); color: #e6a2a2; }
+.badge-date { background: rgba(107, 114, 128, 0.12); color: #b7bec7; text-transform: none; }
+.badge-tag { background: rgba(139, 92, 246, 0.12); color: #b8a8df; text-transform: lowercase; }
+.badge-recurrence { background: rgba(34, 197, 94, 0.14); color: #9de2b4; text-transform: none; }
+.task-metadata-bar { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+
+.task-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    word-break: break-all;
+    padding: 0.35rem 0.6rem;
+    border-radius: 8px;
+    background: rgba(88, 166, 255, 0.08);
+    border: 1px solid rgba(88, 166, 255, 0.2);
+}
+.task-link::before {
+    content: '🔗';
+}
+.task-link:hover {
+    background: rgba(88, 166, 255, 0.16);
+    border-color: rgba(88, 166, 255, 0.35);
+}
+
+/* Meta Footer */
+.task-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: auto;
+}
+.task-actions {
+    display: flex;
+    gap: var(--space-1);
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+.task-card:hover .task-actions {
+    opacity: 1;
+}
+.task-actions button {
+    padding: 4px 6px;
+    border-radius: 4px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.task-actions button:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-color);
+}
+.details-toggle {
+    font-size: 0.68rem;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+.task-card.is-expanded .details-toggle {
+    color: var(--primary-color);
+    background: rgba(88, 166, 255, 0.15);
+}
+.delete-btn:hover {
+    color: var(--danger-color) !important;
+    background: rgba(218, 54, 51, 0.1) !important;
+}
+
+.task-primary-row,
+.task-id-row,
+.task-title-row,
+.task-secondary-row,
+.task-details,
+.task-actions-row {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(13, 17, 23, 0.35);
+    border-radius: 10px;
+    padding: var(--space-2) var(--space-3);
+}
+
+.task-primary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.task-content {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    font-weight: 400;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}

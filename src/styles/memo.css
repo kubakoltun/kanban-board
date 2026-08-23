@@ -1,0 +1,119 @@
+/* Session memo panel (inside a running task's details) + memo history list */
+.active-memo-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+.active-memo-panel label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--text-secondary);
+}
+.active-memo-input {
+    width: 100%;
+    min-height: 76px;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    background: rgba(13, 17, 23, 0.65);
+    color: var(--text-color);
+    padding: 0.65rem 0.75rem;
+    resize: vertical;
+    font-size: 0.88rem;
+    line-height: 1.4;
+}
+.active-memo-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.15);
+}
+.session-state-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.16rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(110, 118, 129, 0.2);
+    color: #f0f6fc;
+    font-size: 0.68rem;
+    letter-spacing: 0.2px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.session-state-chip--recording {
+    border-color: rgba(247, 129, 102, 0.6);
+    background: rgba(247, 129, 102, 0.2);
+    color: #ffd8d1;
+}
+.session-state-chip--paused {
+    border-color: rgba(210, 153, 34, 0.5);
+    background: rgba(210, 153, 34, 0.18);
+    color: #ffe6a7;
+}
+.session-state-chip--awaiting {
+    border-color: rgba(88, 166, 255, 0.55);
+    background: rgba(88, 166, 255, 0.2);
+    color: #d8ebff;
+}
+.memo-save-status {
+    min-height: 1rem;
+    margin: 0;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: #7ee787;
+}
+.memo-guidance-text {
+    margin: 0;
+    color: #c9d1d9;
+    font-size: 0.74rem;
+    line-height: 1.35;
+}
+.memo-history-section {
+    margin-bottom: 1rem;
+}
+.memo-history-section h3 {
+    margin-bottom: 0.65rem;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+.memo-history-list {
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 0.75rem;
+    background: rgba(13, 17, 23, 0.4);
+    display: grid;
+    gap: 0.6rem;
+}
+.memo-history-entry {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 0.65rem;
+    background: rgba(255, 255, 255, 0.03);
+}
+.memo-history-entry.is-draft {
+    border-color: rgba(88, 166, 255, 0.35);
+    background: rgba(88, 166, 255, 0.08);
+}
+.memo-history-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.35rem;
+    font-size: 0.8rem;
+}
+.memo-history-time {
+    color: var(--text-secondary);
+}
+.memo-history-duration {
+    font-family: 'SF Mono', 'Roboto Mono', monospace;
+    color: var(--primary-color);
+}
+.memo-history-note {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--text-color);
+    white-space: pre-wrap;
+}

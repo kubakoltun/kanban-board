@@ -32,9 +32,20 @@ function matchesTag(task, tagValue) {
 
 function matchesSearch(task, searchValue) {
     if (!searchValue) return true;
-    const contentMatch = task.content?.toLowerCase().includes(searchValue);
-    const tagMatch = (task.tags || []).some(tag => tag.toLowerCase().includes(searchValue));
-    return Boolean(contentMatch || tagMatch);
+
+    const titleMatch = task.title?.toLowerCase().includes(searchValue);
+
+    const descriptionMatch = task.description?.toLowerCase().includes(searchValue);
+
+    const tagMatch = (task.tags || []).some(tag => {
+        tag.toLowerCase().includes(searchValue)
+    });
+
+    return Boolean(
+        titleMatch ||
+        descriptionMatch ||
+        tagMatch
+    );
 }
 
 export function matchesDueDateFilter(task, filterValue) {

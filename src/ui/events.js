@@ -10,7 +10,7 @@ import { renderTasks, setupFilterListeners } from './board.js';
 import {
     openModal, closeModal, handleTaskSubmit,
     addModalSubtask, renderModalSubtasks, syncRecurrenceFieldState,
-    setupTaskIdCopyButton
+    setupModalCloseOnEscape, setupTaskIdSelectOnFocus
 } from './task-modal.js';
 import { setupTagsInput } from './tags-input.js';
 import { openHistoryModal, closeHistoryModal, renderHistory } from './history-panel.js';
@@ -26,7 +26,8 @@ export function setupEventListeners() {
     setupImportExport();
 
     setupTagsInput();
-    setupTaskIdCopyButton();
+    setupModalCloseOnEscape();
+    setupTaskIdSelectOnFocus();
     setupFilterListeners();
 
     window.addEventListener('click', handleGlobalClick);
@@ -79,17 +80,17 @@ function setupHistoryAndAnalyticsTriggers() {
     document.getElementById('close-analytics').addEventListener('click', closeAnalyticsModal);
     document.getElementById('close-logs-btn').addEventListener('click', closeTimeLogsModal);
 
-    document.getElementById('clear-history-btn').addEventListener('click', () => {
+    document.getElementById('clear-history-btn').addEventListener('click', async () => {
         if (!confirm('Clear history?')) return;
-        clearHistory();
+        await clearHistory();
         renderHistory();
     });
 }
 
 function setupBoardActionButtons() {
-    document.getElementById('clear-all-btn').addEventListener('click', () => {
+    document.getElementById('clear-all-btn').addEventListener('click', async () => {
         if (!confirm('Delete all tasks?')) return;
-        clearAllTasks();
+        await clearAllTasks();
         renderTasks();
     });
 }
@@ -111,24 +112,24 @@ function setupImportExport() {
     });
 }
 
-function handleImportedFile(fileContent) {
-    if (importBoardData(fileContent)) {
+async function handleImportedFile(fileContent) {
+    if (await importBoardData(fileContent)) {
         renderTasks();
         renderHistory();
         alert('Board imported successfully!');
-    } 
+    }
     else {
         alert('Failed to import board. Invalid file format.');
     }
 }
 
-function handleInlineSubtaskEnter(e) {
+async function handleInlineSubtaskEnter(e) {
     if (!e.target.classList?.contains('subtask-inline-input')) return;
     if (e.key !== 'Enter') return;
     e.preventDefault();
 
     const taskId = e.target.dataset.taskId;
-    addSubtask(taskId, e.target.value);
+    await addSubtask(taskId, e.target.value);
     renderTasks();
 }
 
@@ -164,8 +165,6 @@ function handleModalBackdropClick(e) {
 }
 
 function handleCardButtonClick(e, btn, card) {
-    // e.stopPropagation();
-
     if (btn.classList.contains('timer-btn') && card) return handleTimerButtonClick(e, btn, card);
     if (btn.classList.contains('edit-btn') && card) return handleEditButtonClick(card);
     if (btn.classList.contains('delete-btn') && card) return handleDeleteButtonClick(card);
@@ -176,7 +175,7 @@ function handleCardButtonClick(e, btn, card) {
     if (btn.classList.contains('view-logs-btn') && card) return handleViewLogsClick(e, card);
 }
 
-function handleTimerButtonClick(e, btn, card) {
+async function handleTimerButtonClick(e, btn, card) {
     e.stopPropagation();
     const taskId = card.dataset.id;
     const action = btn.dataset.action;
@@ -185,7 +184,7 @@ function handleTimerButtonClick(e, btn, card) {
         return;
     }
 
-    toggleTimer(taskId, action);
+    await toggleTimer(taskId, action);
     renderTasks();
 }
 
@@ -210,30 +209,30 @@ export function handleEditButtonClick(card) {
     openModal(task);
 }
 
-function handleDeleteButtonClick(card) {
+async function handleDeleteButtonClick(card) {
     const task = state.tasks.find(t => t.id === card.dataset.id);
     if (!task || !confirm('Delete task?')) return;
 
-    deleteTask(task.id);
+    await deleteTask(task.id);
     renderTasks();
 }
 
-function handleSubtaskToggleClick(e, btn, card) {
+async function handleSubtaskToggleClick(e, btn, card) {
     e.stopPropagation();
-    toggleSubtask(card.dataset.id, btn.dataset.subtaskId);
+    await toggleSubtask(card.dataset.id, btn.dataset.subtaskId);
     renderTasks();
 }
 
-function handleSubtaskRemoveClick(e, btn, card) {
+async function handleSubtaskRemoveClick(e, btn, card) {
     e.stopPropagation();
-    removeSubtask(card.dataset.id, btn.dataset.subtaskId);
+    await removeSubtask(card.dataset.id, btn.dataset.subtaskId);
     renderTasks();
 }
 
-function handleSubtaskInlineAddClick(e, card) {
+async function handleSubtaskInlineAddClick(e, card) {
     e.stopPropagation();
     const input = card.querySelector('.subtask-inline-input');
-    addSubtask(card.dataset.id, input?.value || '');
+    await addSubtask(card.dataset.id, input?.value || '');
     renderTasks();
 }
 

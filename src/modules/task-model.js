@@ -1,5 +1,6 @@
-// Task domain model: shape, defaults, and recurrence logic.
-// No DOM and no storage access here - pure data functions.
+// Task domain model: shape helpers and recurrence logic.
+// No DB access here - the server (Drizzle) owns ids/defaults; this file
+// only prepares/validates the data that gets sent over the wire.
 import { generateId } from './id.js';
 
 export const RECURRENCE_TYPES = ['none', 'daily', 'weekly', 'monthly'];
@@ -59,8 +60,10 @@ function isPastRecurrenceEnd(date, recurrenceEnd) {
     return date > endDate;
 }
 
-// Builds the next occurrence of a recurring task once the current one is done.
-export function createNextRecurringTask(task) {
+// Builds the *fields* for the next occurrence of a recurring task once the
+// current one is marked done. The caller persists them via the API - the
+// database assigns the new id, this function never does.
+export function buildNextRecurringTaskFields(task) {
     const recurrence = normalizeTaskRecurrence(task);
     if (recurrence.recurrenceType === 'none') return null;
 
@@ -71,48 +74,19 @@ export function createNextRecurringTask(task) {
     if (isPastRecurrenceEnd(nextDueDate, recurrence.recurrenceEnd)) return null;
 
     return {
-        ...task,
-        id: generateId(),
-        status: 'todo',
-        createdAt: new Date().toISOString(),
+        title: task.title,
+        content: task.content,
+        url: task.url,
+        priority: task.priority,
         dueDate: nextDueDate.toISOString().slice(0, 10),
-        totalTime: 0,
-        isTracking: false,
-        lastStartTime: null,
-        timeLogs: [],
-        memoSessions: [],
-        activeMemoSession: null,
+        tags: task.tags,
+        recurrenceType: recurrence.recurrenceType,
+        recurrenceInterval: recurrence.recurrenceInterval,
+        recurrenceEnd: recurrence.recurrenceEnd,
         subtasks: normalizeTaskSubtasks(task.subtasks).map(subtask => ({
             id: generateId(),
             text: subtask.text,
             done: false
         }))
-    };
-}
-
-// Builds a brand-new task object. The ID is assigned right here, at creation
-// time, so it exists as soon as the task is saved for the first time.
-export function createTask(fields) {
-    const recurrence = normalizeTaskRecurrence(fields);
-
-    return {
-        id: generateId(),
-        content: fields.content,
-        url: fields.url || '',
-        status: 'todo',
-        createdAt: new Date().toISOString(),
-        priority: fields.priority || 'medium',
-        dueDate: fields.dueDate || null,
-        tags: fields.tags || [],
-        recurrenceType: recurrence.recurrenceType,
-        recurrenceInterval: recurrence.recurrenceInterval,
-        recurrenceEnd: recurrence.recurrenceEnd,
-        totalTime: 0,
-        isTracking: false,
-        lastStartTime: null,
-        timeLogs: [],
-        memoSessions: [],
-        activeMemoSession: null,
-        subtasks: normalizeTaskSubtasks(fields.subtasks)
     };
 }

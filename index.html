@@ -78,7 +78,7 @@
                     <option value="all">All statuses</option>
                     <option value="todo">To Do</option>
                     <option value="progress">In Progress</option>
-                    <option value="on-hold">On Hold</option>
+                    <option value="ready-for-review">Ready For Review</option>
                     <option value="done">Done</option>
                 </select>
             </div>
@@ -124,22 +124,13 @@
                     <div class="tasks-container" id="progress-container"></div>
                 </div>
 
-                <!-- Ready For Review
-                <div class="column" data-status="read-for-review" id="read-for-review-col">
+                <!-- Ready For Review Column -->
+                <div class="column" data-status="ready-for-review" id="ready-for-review-col">
                     <div class="column-header">
                         <span>Ready For Review</span>
                         <span class="count">0</span>
                     </div>
-                    <div class="tasks-container" id="read-for-review-container"></div>
-                </div> -->
-
-                <!-- On Hold Column -->
-                <div class="column" data-status="on-hold" id="on-hold-col">
-                    <div class="column-header">
-                        <span>Rejected</span>
-                        <span class="count">0</span>
-                    </div>
-                    <div class="tasks-container" id="on-hold-container"></div>
+                    <div class="tasks-container" id="ready-for-review-container"></div>
                 </div>
 
                 <!-- Done Column -->
@@ -164,6 +155,17 @@
                 <form id="task-form">
                     <input type="hidden" id="task-id" />
                     <div class="task-form-body">
+                        <div class="form-group">
+                            <label for="task-title">Title</label>
+                            <input
+                                type="text"
+                                id="task-title"
+                                placeholder="Task title"
+                                maxlength="300"
+                                required
+                            />
+                        </div>
+
                         <div class="form-group">
                             <label for="task-id-input">Task ID</label>
                                 <div class="task-id-input-row">

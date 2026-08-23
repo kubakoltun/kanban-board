@@ -1,9 +1,10 @@
 // Drag & Drop Module
 import { state } from './state.js';
-import { createNextRecurringTask } from './task-model.js';
-import { saveData } from './storage.js';
+import { buildNextRecurringTaskFields } from './task-model.js';
+import { createTaskApi } from './api.js';
 import { addToHistory } from './history.js';
 import { toggleTimer } from './timer.js';
+import { persistTask } from './tasks.js';
 
 let renderCallback = null;
 
@@ -33,7 +34,7 @@ function handleDragOver(e, column, container) {
     }
 }
 
-function handleDrop(e, column) {
+async function handleDrop(e, column) {
     e.preventDefault();
     column.classList.remove('drag-over');
 
@@ -44,43 +45,61 @@ function handleDrop(e, column) {
     const task = state.tasks.find(t => t.id === draggable.dataset.id);
     if (!task) return;
 
+    if (isBlockedMove(task, status)) {
+        renderCallback?.();
+        return;
+    }
+
     if (task.status !== status) {
-        moveTaskToStatus(task, status);
+        await moveTaskToStatus(task, status);
     }
 
     updateTaskOrder();
-    saveData();
     renderCallback?.();
 }
 
-function moveTaskToStatus(task, status) {
+function isBlockedMove(task, status) {
+    if (status === 'todo' && task.status !== 'todo') {
+        alert('Tasks cannot be moved back to Todo once started!');
+        return true;
+    }
+    return false;
+}
+
+async function moveTaskToStatus(task, status) {
     const oldStatus = task.status;
     task.status = status;
 
     if ((status === 'done' || status === 'todo') && task.isTracking) {
-        toggleTimer(task.id, 'pause');
-        addToHistory('timer', `Auto-stopped timer for "${task.content}" (Moved to ${status})`);
+        // toggleTimer persists the task itself (status change included)
+        await toggleTimer(task.id, 'pause');
+        await addToHistory('timer', `Auto-stopped timer for "${task.title}" (Moved to ${status})`);
+    } 
+    else {
+        await persistTask(task);
     }
 
     if (status === 'done') {
-        spawnNextRecurrence(task);
+        await spawnNextRecurrence(task);
     }
 
-    addToHistory('moved', `Moved "${task.content}" from ${oldStatus} to ${status}`, {
-        from: oldStatus, to: status, task: task.content
+    await addToHistory('moved', `Moved "${task.title}" from ${oldStatus} to ${status}`, {
+        from: oldStatus, to: status, task: task.title
     });
 }
 
-function spawnNextRecurrence(task) {
-    const nextTask = createNextRecurringTask(task);
-    if (!nextTask) return;
+async function spawnNextRecurrence(task) {
+    const fields = buildNextRecurringTaskFields(task);
+    if (!fields) return;
 
+    const nextTask = await createTaskApi(fields);
     state.tasks.push(nextTask);
-    addToHistory('created', `Created recurring task "${nextTask.content}" for ${nextTask.dueDate || 'next cycle'}`);
+    await addToHistory('created', `Created recurring task "${nextTask.title}" for ${nextTask.dueDate || 'next cycle'}`);
 }
 
 function updateTaskOrder() {
-    // Re-read the DOM to find the new order of IDs
+    // Re-read the DOM to find the new order of IDs. This only affects the
+    // in-memory order for display - the server keeps its own createdAt order.
     const newOrder = [];
     const seenIds = new Set();
 

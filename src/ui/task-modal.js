@@ -3,7 +3,7 @@ import { generateId } from '../modules/id.js';
 import { normalizeTaskRecurrence } from '../modules/task-model.js';
 import { createTaskFromForm, updateTaskFromForm } from '../modules/tasks.js';
 import { modalElements } from './dom.js';
-import { escapeHtml, copyToClipboard } from './format.js';
+import { escapeHtml } from './format.js';
 import { clearTagChips, addTagChip, getTagsFromChips } from './tags-input.js';
 
 function normalizeSubtaskText(value) {
@@ -85,11 +85,12 @@ export function syncRecurrenceFieldState() {
     }
 }
 
-// The ID field is only shown once a task actually has one (i.e. when editing) -
-// a brand-new task doesn't get its ID until it's saved for the first time.
+// The ID field only has something to show once a task actually has an id
+// (i.e. when editing) - a brand-new task doesn't get one until the database
+// assigns it on save.
 function fillModalForExistingTask(task) {
     const {
-        title, idInput, idGroup, descInput, urlInput,
+        title, idInput, idGroup, titleInput, descInput, urlInput,
         priorityInput, dueDateInput, recurrenceTypeInput,
         recurrenceIntervalInput, recurrenceEndInput
     } = modalElements;
@@ -97,6 +98,7 @@ function fillModalForExistingTask(task) {
     title.innerText = 'Edit Task';
     idInput.value = task.id;
     if (idGroup) idGroup.hidden = false;
+    titleInput.value = task.title || '';
     descInput.value = task.content;
     if (urlInput) urlInput.value = task.url || '';
     if (priorityInput) priorityInput.value = task.priority || 'medium';
@@ -113,15 +115,15 @@ function fillModalForExistingTask(task) {
 
 function fillModalForNewTask() {
     const {
-        title, idInput, idDisplay, idGroup, descInput, urlInput,
+        title, idInput, idGroup, titleInput, descInput, urlInput,
         priorityInput, dueDateInput, recurrenceTypeInput,
         recurrenceIntervalInput, recurrenceEndInput
     } = modalElements;
 
     title.innerText = 'Add New Task';
     idInput.value = '';
-    if (idDisplay) idDisplay.value = '';
     if (idGroup) idGroup.hidden = true; // No ID exists yet until the task is saved
+    titleInput.value = '';
     descInput.value = '';
     if (urlInput) urlInput.value = '';
     if (priorityInput) priorityInput.value = 'medium';
@@ -136,12 +138,6 @@ function fillModalForNewTask() {
 export function openModal(task = null) {
     modalElements.modal.classList.add('active');
     document.body.classList.add('modal-open');
-    document.addEventListener('keydown', (e) => {
-        if (e.key.toLowerCase() === 'escape') {
-            closeModal();
-        }
-    });
-
     clearTagChips();
 
     if (task) {
@@ -154,7 +150,7 @@ export function openModal(task = null) {
     syncRecurrenceFieldState();
     const formBody = modalElements.form?.querySelector('.task-form-body');
     if (formBody) formBody.scrollTop = 0;
-    modalElements.descInput.focus();
+    modalElements.titleInput.focus();
 }
 
 export function closeModal() {
@@ -162,14 +158,33 @@ export function closeModal() {
     document.body.classList.remove('modal-open');
 }
 
+// Registered once (in events.js), rather than re-added on every openModal()
+// call - that would otherwise pile up duplicate listeners.
+export function setupModalCloseOnEscape() {
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape' && e.key !== 'Esc') return;
+        if (!modalElements.modal.classList.contains('active')) return;
+        closeModal();
+    });
+}
+
+// The ID field is read-only, but a click/focus selects its whole contents
+// so it's still one quick copy (Ctrl/Cmd+C) away.
+export function setupTaskIdSelectOnFocus() {
+    const selectAll = () => modalElements.idInput?.select();
+    modalElements.idInput?.addEventListener('click', selectAll);
+    modalElements.idInput?.addEventListener('focus', selectAll);
+}
+
 function readFormFields() {
     const {
-        idInput, descInput, urlInput, priorityInput, dueDateInput,
+        idInput, titleInput, descInput, urlInput, priorityInput, dueDateInput,
         recurrenceTypeInput, recurrenceIntervalInput, recurrenceEndInput
     } = modalElements;
 
     return {
         id: idInput.value,
+        title: titleInput.value.trim(),
         content: descInput.value.trim(),
         url: urlInput ? urlInput.value.trim() : '',
         priority: priorityInput ? priorityInput.value : 'medium',
@@ -182,25 +197,18 @@ function readFormFields() {
     };
 }
 
-export function handleTaskSubmit(e, onSaved) {
+export async function handleTaskSubmit(e, onSaved) {
     e.preventDefault();
     const fields = readFormFields();
-    if (!fields.content) return;
+    if (!fields.title || !fields.content) return;
 
     if (fields.id) {
-        updateTaskFromForm(fields.id, fields);
+        await updateTaskFromForm(fields.id, fields);
     } 
     else {
-        createTaskFromForm(fields);
+        await createTaskFromForm(fields);
     }
 
     onSaved?.();
     closeModal();
-}
-
-export function setupTaskIdCopyButton() {
-    modalElements.copyIdBtn?.addEventListener('click', () => {
-        const id = modalElements.idDisplay?.value;
-        if (id) copyToClipboard(id);
-    });
 }

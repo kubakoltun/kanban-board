@@ -28,8 +28,8 @@ function clearColumns() {
 }
 
 function renderTaskCards(filteredTasks) {
-    const taskCounts = { todo: 0, progress: 0, 'on-hold': 0, done: 0 };
-    const totalCounts = { todo: 0, progress: 0, 'on-hold': 0, done: 0 };
+    const taskCounts = { todo: 0, progress: 0, 'ready-for-review': 0, done: 0 };
+    const totalCounts = { todo: 0, progress: 0, 'ready-for-review': 0, done: 0 };
 
     state.tasks.forEach(task => {
         if (totalCounts[task.status] !== undefined) totalCounts[task.status]++;
@@ -59,22 +59,12 @@ function fillEmptyColumns() {
 function updateColumnCounts(taskCounts, totalCounts, hasActiveFilters) {
     Object.keys(totalCounts).forEach(status => {
         const totalCount = totalCounts[status];
+        const countLabel = hasActiveFilters
+            ? `${taskCounts[status]}/${totalCount}`
+            : `${totalCount}`;
 
-        const countLabel = formatColumnCount({
-            hasActiveFilters,
-            filteredCount: taskCounts[status],
-            totalCount
-        });
-
-        boardElements.counts[status].innerText = countLabel;
+        if (boardElements.counts[status]) boardElements.counts[status].innerText = countLabel;
     });
-}
-
-function formatColumnCount({ hasActiveFilters, filteredCount, totalCount }) {
-    if (hasActiveFilters) {
-        return `${filteredCount}/${totalCount}`;
-    }
-    return `${totalCount}`;
 }
 
 // -- Toolbar filters --

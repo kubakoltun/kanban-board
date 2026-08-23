@@ -1,0 +1,90 @@
+/* Buttons: primary/secondary/danger + the pill-shaped header action bar */
+#add-task-btn, .btn-primary {
+    background: linear-gradient(180deg, #2ea043 0%, #238636 100%);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.1) inset;
+}
+#add-task-btn:hover, .btn-primary:hover {
+    background: #2ea043;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(35, 134, 54, 0.4);
+}
+
+.btn-secondary {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-color);
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--text-secondary);
+}
+
+.btn-danger-outline {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: #ff7b72;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.btn-danger-outline:hover {
+    background: rgba(218, 54, 51, 0.1);
+    border-color: var(--danger-color);
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+    background: #010409;
+    padding: 4px 6px;
+    border-radius: 50px;
+    border: 1px solid var(--glass-border);
+    align-items: center;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+.header-actions .btn-secondary,
+.header-actions .btn-danger-outline {
+    background: transparent;
+    border: none;
+    border-radius: 30px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+.header-actions .btn-secondary:hover,
+.header-actions .btn-danger-outline:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-color);
+    box-shadow: none;
+    transform: none;
+}
+.header-actions .btn-primary {
+    border-radius: 30px;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.85rem;
+    box-shadow: none;
+    margin-left: 0.5rem;
+}

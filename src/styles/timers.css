@@ -1,0 +1,109 @@
+/* Per-card timer display + controls */
+.task-timer {
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.35);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.task-timer.is-running {
+    border-color: rgba(88, 166, 255, 0.45);
+    box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.8),
+        0 0 15px rgba(88, 166, 255, 0.15);
+    background: linear-gradient(90deg, #0d1117, #161b22);
+}
+.task-timer.is-running::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(transparent, rgba(88, 166, 255, 0.1), transparent 30%);
+    animation: rotate-sheen 4s linear infinite;
+    z-index: 1;
+    pointer-events: none;
+}
+@keyframes rotate-sheen {
+    100% { transform: rotate(360deg); }
+}
+.timer-display {
+    font-family: 'SF Mono', 'Roboto Mono', monospace;
+    font-size: 1rem;
+    color: #8b949e;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s;
+}
+.task-timer-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.task-timer-state {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.task-timer-state.is-active {
+    color: var(--primary-color);
+}
+.task-timer.is-running .timer-display {
+    color: #58a6ff;
+    text-shadow: 0 0 8px rgba(88, 166, 255, 0.4);
+}
+.recording-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #f78166;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 6px #f78166;
+    animation: blink-dot 1s infinite ease-in-out;
+}
+@keyframes blink-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+}
+.timer-btn, .view-logs-btn {
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-secondary);
+}
+.timer-btn:hover, .view-logs-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    transform: scale(1.1);
+}
+.start-btn:hover {
+    background: rgba(35, 134, 54, 0.2);
+    color: #3fb950;
+    box-shadow: 0 0 10px rgba(35, 134, 54, 0.2);
+}
+.pause-btn:hover {
+    background: rgba(210, 153, 34, 0.2);
+    color: #d29922;
+    box-shadow: 0 0 10px rgba(210, 153, 34, 0.2);
+}
+.view-logs-btn:hover {
+    background: rgba(88, 166, 255, 0.2);
+    color: #58a6ff;
+    box-shadow: 0 0 10px rgba(88, 166, 255, 0.2);
+}

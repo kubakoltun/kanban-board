@@ -3,10 +3,10 @@ export const modalElements = {
     modal: document.getElementById('task-modal'),
     title: document.getElementById('modal-title'),
     form: document.getElementById('task-form'),
-    descInput: document.getElementById('task-desc'),
     idInput: document.getElementById('task-id-input'),
     idGroup: document.getElementById('task-id-group'),
-    copyIdBtn: document.getElementById('copy-task-id-btn'),
+    titleInput: document.getElementById('task-title'),
+    descInput: document.getElementById('task-desc'),
     urlInput: document.getElementById('task-url'),
     priorityInput: document.getElementById('task-priority'),
     dueDateInput: document.getElementById('task-due-date'),
@@ -51,19 +51,19 @@ export const boardElements = {
     columns: {
         todo: document.getElementById('todo-container'),
         progress: document.getElementById('progress-container'),
-        'on-hold': document.getElementById('on-hold-container'),
+        'ready-for-review': document.getElementById('ready-for-review-container'),
         done: document.getElementById('done-container')
     },
     columnWrappers: {
         todo: document.getElementById('todo-col'),
         progress: document.getElementById('progress-col'),
-        'on-hold': document.getElementById('on-hold-col'),
+        'ready-for-review': document.getElementById('ready-for-review-col'),
         done: document.getElementById('done-col')
     },
     counts: {
         todo: document.querySelector('#todo-col .count'),
         progress: document.querySelector('#progress-col .count'),
-        'on-hold': document.querySelector('#on-hold-col .count'),
+        'ready-for-review': document.querySelector('#ready-for-review-col .count'),
         done: document.querySelector('#done-col .count')
     }
 };

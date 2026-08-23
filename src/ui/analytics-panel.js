@@ -7,7 +7,7 @@ import { getWeekStart } from './format.js';
 const STATUS_LABELS = {
     todo: 'To Do',
     progress: 'In Progress',
-    'on-hold': 'On Hold',
+    'ready-for-review': 'Ready For Review',
     done: 'Done'
 };
 
@@ -69,7 +69,7 @@ function calculateTimeByStatus() {
         const statusKey = task.status || 'todo';
         acc[statusKey] = (acc[statusKey] || 0) + (task.totalTime || 0);
         return acc;
-    }, { todo: 0, progress: 0, 'on-hold': 0, done: 0 });
+    }, { todo: 0, progress: 0, 'ready-for-review': 0, done: 0 });
 }
 
 function getDayKey(date) {

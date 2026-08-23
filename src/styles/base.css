@@ -1,0 +1,63 @@
+/* Design tokens, resets, and page-level background */
+:root {
+    --bg-color: #0d1117;
+    --text-color: #e6edf3;
+    --text-secondary: #8b949e;
+    --column-bg: rgba(22, 27, 34, 0.6);
+    --card-bg: rgba(33, 38, 45, 0.95);
+    --primary-color: #58a6ff;
+    --success-color: #238636;
+    --danger-color: #da3633;
+    --warning-color: #d29922;
+    --glass-border: rgba(240, 246, 252, 0.1);
+    --shadow-sm: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-md: 0 8px 24px rgba(0,0,0,0.2);
+    --shadow-lg: 0 12px 48px rgba(0,0,0,0.4);
+    --radius: 12px;
+    --space-1: 0.35rem;
+    --space-2: 0.65rem;
+    --space-3: 0.9rem;
+    --space-4: 1.2rem;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    background-image:
+        radial-gradient(at 0% 0%, rgba(88, 166, 255, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(210, 153, 34, 0.15) 0px, transparent 50%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+button {
+    font-family: inherit;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}

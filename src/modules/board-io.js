@@ -1,7 +1,6 @@
-// Board Export / Import (JSON backup file)
+// Board Export / Import (JSON backup file), going through the API for import
 import { state } from './state.js';
-import { normalizeTaskRecurrence, normalizeTaskSubtasks } from './task-model.js';
-import { saveData, saveHistory } from './storage.js';
+import { importBoardApi } from './api.js';
 
 export function exportBoardData() {
     const data = {
@@ -23,36 +22,19 @@ export function exportBoardData() {
     URL.revokeObjectURL(url);
 }
 
-function importTasks(tasks) {
-    if (!Array.isArray(tasks)) return;
-
-    state.tasks = tasks.map(task => ({
-        ...task,
-        memoSessions: task.memoSessions || [],
-        activeMemoSession: task.activeMemoSession || null,
-        subtasks: normalizeTaskSubtasks(task.subtasks),
-        ...normalizeTaskRecurrence(task)
-    }));
-    saveData();
-}
-
-function importHistory(history) {
-    if (!Array.isArray(history)) return;
-
-    state.history = history;
-    saveHistory();
-}
-
-export function importBoardData(jsonString) {
+export async function importBoardData(jsonString) {
     try {
         const data = JSON.parse(jsonString);
-        importTasks(data.tasks);
-        importHistory(data.history);
-        
+        const result = await importBoardApi({
+            tasks: Array.isArray(data.tasks) ? data.tasks : [],
+            history: Array.isArray(data.history) ? data.history : []
+        });
+
+        state.tasks = result.tasks;
+        state.history = result.history;
         return true;
     } catch (e) {
         console.error('Import failed:', e);
-        
         return false;
     }
 }

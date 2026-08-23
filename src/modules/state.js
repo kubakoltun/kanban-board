@@ -1,3 +1,4 @@
+// Central Application State
 export const state = {
     tasks: [],
     history: [],

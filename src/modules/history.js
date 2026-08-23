@@ -1,23 +1,15 @@
-// Activity History Module
+// Activity History Module - persisted via the API, no local storage
 import { state } from './state.js';
-import { generateId } from './id.js';
-import { saveHistory } from './storage.js';
+import { createHistoryEntryApi, clearHistoryApi } from './api.js';
 
-export function addToHistory(action, description, metadata = null) {
-    const entry = {
-        id: generateId(),
-        action,
-        description,
-        metadata,
-        timestamp: new Date().toISOString()
-    };
+export async function addToHistory(action, description, metadata = null) {
+    const entry = await createHistoryEntryApi({ action, description, metadata });
     state.history.unshift(entry); // Add to beginning
-    saveHistory();
 }
 
-export function clearHistory() {
+export async function clearHistory() {
+    await clearHistoryApi();
     state.history = [];
-    saveHistory();
 }
 
 const TIME_UNITS = [

@@ -1,10 +1,10 @@
 // Renders an individual task card for the board
 import { state } from '../modules/state.js';
 import { formatTime } from '../modules/timer.js';
-import { escapeHtml, normalizeUrl, formatUrlLabel, copyToClipboard } from './format.js';
+import { escapeHtml, normalizeUrl, formatUrlLabel } from './format.js';
 import { getIcon } from './icons.js';
 import { getSessionStateMeta, getMemoSaveStatusText } from './memo.js';
-import { handleEditButtonClick } from './events.js'
+import { handleEditButtonClick } from './events.js';
 
 const MS_IN_DAY = 24 * 60 * 60 * 1000;
 
@@ -22,7 +22,7 @@ export function createTaskCard(task) {
     if (detailsPanel) detailsPanel.hidden = true;
 
     attachDragHandlers(div, task);
-    attachCopyIdHandler(div);
+    attachIdSelectHandler(div);
 
     return div;
 }
@@ -49,30 +49,26 @@ function attachDragHandlers(div, task) {
         div.classList.remove('dragging');
         state.draggedTask = null;
     });
-    div.addEventListener("click", (e) => {
-        // Buttons have their own click behavior
-        // Don't let the card click handler handle them too
-        if (e.target.closest('button')) {
-            return;
-        }
-        if (e.target.closest('.task-details')) {
-            return;
-        }
-        if (e.target.closest('.task-id-input')) {
-            return;
-        }
+
+    // Clicking anywhere on the card (that isn't a button, the details panel,
+    // or the ID field) opens it for editing.
+    div.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        if (e.target.closest('.task-details')) return;
+        if (e.target.closest('.task-id-input')) return;
 
         const card = e.target.closest('.task-card');
-        if (card) {
-            handleEditButtonClick(card);
-        }
+        if (card) handleEditButtonClick(card);
     });
 }
 
-function attachCopyIdHandler(div) {
-    div.querySelector('.copy-id-btn')?.addEventListener('click', (e) => {
+// The ID field is read-only; clicking it selects its contents so it's a
+// quick Ctrl/Cmd+C away without needing a dedicated copy button.
+function attachIdSelectHandler(div) {
+    const idInput = div.querySelector('.task-id-input');
+    idInput?.addEventListener('click', (e) => {
         e.stopPropagation();
-        copyToClipboard(div.dataset.id);
+        idInput.select();
     });
 }
 
@@ -81,8 +77,11 @@ function buildCardMarkup(task) {
         <div class="task-id-row">
             <input type="text" class="task-id-input" value="${task.id}" readonly aria-label="Task ID" />
         </div>
-        <div class="task-primary-row">
-            <div class="task-content">${escapeHtml(task.content)}</div>
+        <div class="task-title-row">
+            <div class="task-title">${escapeHtml(task.title)}</div>
+        </div>
+        <p class="task-description">${escapeHtml(task.content)}</p>
+        <div class="task-priority-row">
             ${buildPriorityBadge(task)}
         </div>
         ${buildTimerSection(task)}

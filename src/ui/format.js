@@ -17,7 +17,7 @@ export function formatUrlLabel(url) {
 }
 
 export function formatStatus(status) {
-    const map = { todo: 'To Do', progress: 'In Progress', 'on-hold': 'On Hold', done: 'Done' };
+    const map = { todo: 'To Do', progress: 'In Progress', 'ready-for-review': 'Ready For Review', done: 'Done' };
     return map[status] || status;
 }
 
@@ -44,23 +44,4 @@ export function getDayGroupLabel(dateValue) {
     if (dayDate.getTime() === yesterday.getTime()) return 'Yesterday';
 
     return dayDate.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-}
-
-// Copies text to the clipboard, with a fallback for browsers/contexts
-// where the async Clipboard API is not available
-export async function copyToClipboard(text) {
-    if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text);
-        
-        return;
-    }
-
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
 }

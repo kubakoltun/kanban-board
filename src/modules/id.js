@@ -1,4 +1,6 @@
-// todo an id from the database
+// todo an id from the database itereting number from 1
 export function generateId() {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    nextIdFromDb = 1;
+
+    return nextIdFromDb;
 }
