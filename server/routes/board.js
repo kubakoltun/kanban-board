@@ -37,6 +37,7 @@ function toTaskRow(task) {
         priority: task.priority || 'medium',
         dueDate: task.dueDate || null,
         tags: task.tags || [],
+        assignedUserId: task.assignedUserId || null,
         recurrenceType: task.recurrenceType || 'none',
         recurrenceInterval: task.recurrenceInterval || 1,
         recurrenceEnd: task.recurrenceEnd || null,

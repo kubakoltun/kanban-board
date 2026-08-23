@@ -4,7 +4,7 @@ import { buildNextRecurringTaskFields } from './task-model.js';
 import { createTaskApi } from './api.js';
 import { addToHistory } from './history.js';
 import { toggleTimer } from './timer.js';
-import { persistTask } from './tasks.js';
+import { findTask, persistTask } from './tasks.js';
 
 let renderCallback = null;
 
@@ -42,7 +42,7 @@ async function handleDrop(e, column) {
     const draggable = document.querySelector('.dragging');
     if (!draggable) return; // Touch drag edge case
 
-    const task = state.tasks.find(t => t.id === draggable.dataset.id);
+    const task = findTask(draggable.dataset.id);
     if (!task) return;
 
     if (task.status !== status) {
@@ -93,18 +93,18 @@ function updateTaskOrder() {
     document.querySelectorAll('.column').forEach(col => {
         const status = col.dataset.status;
         col.querySelectorAll('.task-card').forEach(card => {
-            const task = state.tasks.find(t => t.id === card.dataset.id);
+            const task = findTask(card.dataset.id);
             if (!task) return;
 
             task.status = status; // Ensure status reflects the column it's in
-            seenIds.add(task.id);
+            seenIds.add(String(task.id));
             newOrder.push(task);
         });
     });
 
     // Keep newly-created tasks that aren't yet represented in the current DOM pass
     state.tasks.forEach(task => {
-        if (!seenIds.has(task.id)) {
+        if (!seenIds.has(String(task.id))) {
             newOrder.push(task);
         }
     });

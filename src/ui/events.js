@@ -1,9 +1,8 @@
 // Global event wiring: modal triggers, delegated card clicks, filters, memo autosave
-import { state } from '../modules/state.js';
 import { exportBoardData, importBoardData } from '../modules/board-io.js';
 import { clearHistory } from '../modules/history.js';
 import { toggleTimer } from '../modules/timer.js';
-import { addSubtask, toggleSubtask, removeSubtask, deleteTask, clearAllTasks } from '../modules/tasks.js';
+import { addSubtask, toggleSubtask, removeSubtask, deleteTask, clearAllTasks, findTask } from '../modules/tasks.js';
 
 import { modalElements, historyElements, timeLogsElements, analyticsElements } from './dom.js';
 import { renderTasks, setupFilterListeners } from './board.js';
@@ -117,7 +116,7 @@ async function handleImportedFile(fileContent) {
         renderTasks();
         renderHistory();
         alert('Board imported successfully!');
-    }
+    } 
     else {
         alert('Failed to import board. Invalid file format.');
     }
@@ -189,7 +188,7 @@ async function handleTimerButtonClick(e, btn, card) {
 }
 
 function confirmPauseWithoutMemo(card, taskId) {
-    const task = state.tasks.find(t => t.id === taskId);
+    const task = findTask(taskId);
     const memoInput = card.querySelector('.active-memo-input');
     const note = memoInput ? memoInput.value.trim() : (task?.activeMemoSession?.note || '').trim();
 
@@ -205,12 +204,12 @@ function confirmPauseWithoutMemo(card, taskId) {
 }
 
 export function handleEditButtonClick(card) {
-    const task = state.tasks.find(t => t.id === card.dataset.id);
+    const task = findTask(card.dataset.id);
     openModal(task);
 }
 
 async function handleDeleteButtonClick(card) {
-    const task = state.tasks.find(t => t.id === card.dataset.id);
+    const task = findTask(card.dataset.id);
     if (!task || !confirm('Delete task?')) return;
 
     await deleteTask(task.id);

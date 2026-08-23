@@ -7,8 +7,11 @@ import { normalizeTaskRecurrence } from './task-model.js';
 import { createTaskApi, updateTaskApi, deleteTaskApi, clearTasksApi } from './api.js';
 import { addToHistory } from './history.js';
 
+// Task ids come back from the database as numbers, but any id read off the
+// DOM (dataset attributes) is always a string - compare loosely by string
+// so lookups work regardless of which side the id came from.
 export function findTask(taskId) {
-    return state.tasks.find(t => t.id === taskId);
+    return state.tasks.find(t => String(t.id) === String(taskId));
 }
 
 export async function createTaskFromForm(fields) {
@@ -21,6 +24,7 @@ export async function createTaskFromForm(fields) {
         priority: fields.priority || 'medium',
         dueDate: fields.dueDate || null,
         tags: fields.tags || [],
+        assignedUserId: fields.assignedUserId || null,
         recurrenceType: recurrence.recurrenceType,
         recurrenceInterval: recurrence.recurrenceInterval,
         recurrenceEnd: recurrence.recurrenceEnd,
@@ -44,6 +48,7 @@ export async function updateTaskFromForm(taskId, fields) {
         priority: fields.priority || 'medium',
         dueDate: fields.dueDate || null,
         tags: fields.tags || [],
+        assignedUserId: fields.assignedUserId || null,
         recurrenceType: recurrence.recurrenceType,
         recurrenceInterval: recurrence.recurrenceInterval,
         recurrenceEnd: recurrence.recurrenceEnd,
@@ -67,7 +72,7 @@ export async function deleteTask(taskId) {
     if (!task) return;
 
     await deleteTaskApi(taskId);
-    state.tasks = state.tasks.filter(t => t.id !== taskId);
+    state.tasks = state.tasks.filter(t => t.id !== task.id);
     await addToHistory('deleted', `Deleted "${task.title}"`);
 }
 

@@ -1,11 +1,13 @@
 import { state } from './modules/state.js';
 import { loadData } from './modules/load.js';
+import { loadUsers } from './modules/users.js';
+import { findTask } from './modules/tasks.js';
 import { restoreActiveTimers, getActiveTimerIds, formatTime } from './modules/timer.js';
 import { initDragSystem } from './modules/drag.js';
 import { renderTasks, setupEventListeners } from './ui/index.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await loadData();
+    await Promise.all([loadData(), loadUsers()]);
     restoreActiveTimers();
     setupEventListeners();
     setupDragAndDrop();
@@ -28,7 +30,7 @@ function startTimerTickLoop() {
 }
 
 function updateRunningTimerDisplay(taskId) {
-    const task = state.tasks.find(t => t.id === taskId);
+    const task = findTask(taskId);
     if (!task) return;
 
     const currentTotal = task.totalTime + (Date.now() - task.lastStartTime);

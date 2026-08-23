@@ -5,7 +5,7 @@ async function request(path, options = {}) {
     const res = await fetch(`${API_BASE}${path}`, {
         headers: { 'Content-Type': 'application/json' },
         ...options
-    });    
+    });
 
     if (!res.ok) {
         throw new Error(`API request failed: ${options.method || 'GET'} ${path} (${res.status})`);
@@ -34,6 +34,15 @@ export function deleteTaskApi(id) {
 
 export function clearTasksApi() {
     return request('/tasks', { method: 'DELETE' });
+}
+
+// -- Users --
+export function fetchUsers() {
+    return request('/users');
+}
+
+export function createUserApi(fields) {
+    return request('/users', { method: 'POST', body: JSON.stringify(fields) });
 }
 
 // -- History --

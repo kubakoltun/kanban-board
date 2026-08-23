@@ -1,6 +1,7 @@
 // Renders an individual task card for the board
 import { state } from '../modules/state.js';
 import { formatTime } from '../modules/timer.js';
+import { findUser, formatUserName } from '../modules/users.js';
 import { escapeHtml, normalizeUrl, formatUrlLabel } from './format.js';
 import { getIcon } from './icons.js';
 import { getSessionStateMeta, getMemoSaveStatusText } from './memo.js';
@@ -83,6 +84,7 @@ function buildCardMarkup(task) {
         <p class="task-description">${escapeHtml(task.content)}</p>
         <div class="task-priority-row">
             ${buildPriorityBadge(task)}
+            ${buildAssignedUserBadge(task)}
         </div>
         ${buildTimerSection(task)}
         <div class="task-details ${hasDetails(task) ? '' : 'is-empty'}">
@@ -108,6 +110,12 @@ function buildCardMarkup(task) {
 
 function buildPriorityBadge(task) {
     return task.priority ? `<span class="badge badge-${task.priority}">${task.priority}</span>` : '';
+}
+
+function buildAssignedUserBadge(task) {
+    const user = findUser(task.assignedUserId);
+    if (!user) return '<span class="badge badge-unassigned">Unassigned</span>';
+    return `<span class="badge badge-assignee">${escapeHtml(formatUserName(user))}</span>`;
 }
 
 function buildEditButton(task) {

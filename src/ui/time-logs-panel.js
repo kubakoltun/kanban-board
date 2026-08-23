@@ -1,11 +1,12 @@
 // Time Logs modal rendering (per-task session history + memo history)
 import { state } from '../modules/state.js';
+import { findTask } from '../modules/tasks.js';
 import { formatTime } from '../modules/timer.js';
 import { timeLogsElements } from './dom.js';
 import { escapeHtml, getDayGroupLabel } from './format.js';
 
 export function openTimeLogs(taskId) {
-    const task = state.tasks.find(t => t.id === taskId);
+    const task = findTask(taskId);
     if (!task) return;
 
     state.viewedTaskId = taskId;

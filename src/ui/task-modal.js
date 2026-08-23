@@ -1,4 +1,5 @@
 // Add/Edit Task Modal
+import { state } from '../modules/state.js';
 import { generateId } from '../modules/id.js';
 import { normalizeTaskRecurrence } from '../modules/task-model.js';
 import { createTaskFromForm, updateTaskFromForm } from '../modules/tasks.js';
@@ -85,24 +86,39 @@ export function syncRecurrenceFieldState() {
     }
 }
 
+// Rebuilds the "Assigned To" <select> options from whatever users were
+// loaded at startup (see modules/users.js), keeping `selectedUserId` picked.
+function populateAssignedUserOptions(selectedUserId) {
+    const { assignedUserInput } = modalElements;
+    if (!assignedUserInput) return;
+
+    const options = ['<option value="">Unassigned</option>']
+        .concat(state.users.map(user => `<option value="${user.id}">${escapeHtml(user.name)} ${escapeHtml(user.surname)}</option>`));
+
+    assignedUserInput.innerHTML = options.join('');
+    assignedUserInput.value = selectedUserId ? String(selectedUserId) : '';
+}
+
 // The ID field only has something to show once a task actually has an id
 // (i.e. when editing) - a brand-new task doesn't get one until the database
 // assigns it on save.
 function fillModalForExistingTask(task) {
     const {
-        title, idInput, idGroup, titleInput, descInput, urlInput,
+        title, idInput, idDisplay, idGroup, titleInput, descInput, urlInput,
         priorityInput, dueDateInput, recurrenceTypeInput,
         recurrenceIntervalInput, recurrenceEndInput
     } = modalElements;
 
     title.innerText = 'Edit Task';
     idInput.value = task.id;
+    if (idDisplay) idDisplay.value = task.id;
     if (idGroup) idGroup.hidden = false;
     titleInput.value = task.title || '';
     descInput.value = task.content;
     if (urlInput) urlInput.value = task.url || '';
     if (priorityInput) priorityInput.value = task.priority || 'medium';
     if (dueDateInput) dueDateInput.value = task.dueDate ? task.dueDate.slice(0, 10) : '';
+    populateAssignedUserOptions(task.assignedUserId);
 
     const recurrence = normalizeTaskRecurrence(task);
     if (recurrenceTypeInput) recurrenceTypeInput.value = recurrence.recurrenceType;
@@ -115,19 +131,21 @@ function fillModalForExistingTask(task) {
 
 function fillModalForNewTask() {
     const {
-        title, idInput, idGroup, titleInput, descInput, urlInput,
+        title, idInput, idDisplay, idGroup, titleInput, descInput, urlInput,
         priorityInput, dueDateInput, recurrenceTypeInput,
         recurrenceIntervalInput, recurrenceEndInput
     } = modalElements;
 
     title.innerText = 'Add New Task';
     idInput.value = '';
+    if (idDisplay) idDisplay.value = '';
     if (idGroup) idGroup.hidden = true; // No ID exists yet until the task is saved
     titleInput.value = '';
     descInput.value = '';
     if (urlInput) urlInput.value = '';
     if (priorityInput) priorityInput.value = 'medium';
     if (dueDateInput) dueDateInput.value = '';
+    populateAssignedUserOptions(null);
     if (recurrenceTypeInput) recurrenceTypeInput.value = 'none';
     if (recurrenceIntervalInput) recurrenceIntervalInput.value = '1';
     if (recurrenceEndInput) recurrenceEndInput.value = '';
@@ -168,18 +186,18 @@ export function setupModalCloseOnEscape() {
     });
 }
 
-// The ID field is read-only, but a click/focus selects its whole contents
-// so it's still one quick copy (Ctrl/Cmd+C) away.
+// The ID display field is read-only, but a click/focus selects its whole
+// contents so it's still one quick copy (Ctrl/Cmd+C) away.
 export function setupTaskIdSelectOnFocus() {
-    const selectAll = () => modalElements.idInput?.select();
-    modalElements.idInput?.addEventListener('click', selectAll);
-    modalElements.idInput?.addEventListener('focus', selectAll);
+    const selectAll = () => modalElements.idDisplay?.select();
+    modalElements.idDisplay?.addEventListener('click', selectAll);
+    modalElements.idDisplay?.addEventListener('focus', selectAll);
 }
 
 function readFormFields() {
     const {
         idInput, titleInput, descInput, urlInput, priorityInput, dueDateInput,
-        recurrenceTypeInput, recurrenceIntervalInput, recurrenceEndInput
+        assignedUserInput, recurrenceTypeInput, recurrenceIntervalInput, recurrenceEndInput
     } = modalElements;
 
     return {
@@ -189,6 +207,7 @@ function readFormFields() {
         url: urlInput ? urlInput.value.trim() : '',
         priority: priorityInput ? priorityInput.value : 'medium',
         dueDate: dueDateInput ? dueDateInput.value : null,
+        assignedUserId: assignedUserInput?.value ? Number(assignedUserInput.value) : null,
         recurrenceType: recurrenceTypeInput ? recurrenceTypeInput.value : 'none',
         recurrenceInterval: recurrenceIntervalInput ? Number.parseInt(recurrenceIntervalInput.value, 10) : 1,
         recurrenceEnd: recurrenceEndInput ? (recurrenceEndInput.value || null) : null,
@@ -204,7 +223,7 @@ export async function handleTaskSubmit(e, onSaved) {
 
     if (fields.id) {
         await updateTaskFromForm(fields.id, fields);
-    } 
+    }
     else {
         await createTaskFromForm(fields);
     }

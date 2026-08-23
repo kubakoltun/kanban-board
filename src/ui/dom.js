@@ -3,13 +3,15 @@ export const modalElements = {
     modal: document.getElementById('task-modal'),
     title: document.getElementById('modal-title'),
     form: document.getElementById('task-form'),
-    idInput: document.getElementById('task-id-input'),
+    idInput: document.getElementById('task-id'),
+    idDisplay: document.getElementById('task-id-input'),
     idGroup: document.getElementById('task-id-group'),
     titleInput: document.getElementById('task-title'),
     descInput: document.getElementById('task-desc'),
     urlInput: document.getElementById('task-url'),
     priorityInput: document.getElementById('task-priority'),
     dueDateInput: document.getElementById('task-due-date'),
+    assignedUserInput: document.getElementById('task-assigned-user'),
     recurrenceTypeInput: document.getElementById('task-recurrence-type'),
     recurrenceIntervalInput: document.getElementById('task-recurrence-interval'),
     recurrenceEndInput: document.getElementById('task-recurrence-end'),
@@ -47,6 +49,10 @@ export const filterElements = {
     sortDueDate: document.getElementById('sort-due-date')
 };
 
+// NOTE: these keys must match the `data-status` values used in index.html
+// exactly (todo / progress / ready-for-review / done). A mismatch here is
+// what silently broke the "Ready For Review" column before - tasks with an
+// unrecognized status get force-reset to 'todo' by the board's safety net.
 export const boardElements = {
     columns: {
         todo: document.getElementById('todo-container'),

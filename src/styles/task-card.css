@@ -1,4 +1,6 @@
-/* Task card: title, description, priority, badges, and the action footer */
+/* Task card: title, description, priority, and the action footer.
+   (Badges live in badges.css, timer bits in timers.css, memo in memo.css,
+   subtasks in subtasks.css - this file is just the card's own structure.) */
 .task-card {
     background: var(--card-bg);
     border: 1px solid var(--glass-border);
@@ -14,8 +16,7 @@
     gap: var(--space-2);
 }
 /* Flex column items can overflow long unbroken text unless forced to
-   shrink - this is what caused the description text to spill past the
-   card in the main board view. */
+   shrink - this is what caused text to spill past the card edge. */
 .task-card > * {
     min-width: 0;
 }
@@ -62,8 +63,9 @@
     word-break: break-word;
 }
 
-/* Description sits below the title, unboxed, with generous wrapping rules
-   so long text always stays inside the card. */
+/* Description sits below the title, unboxed. Clamped to a handful of
+   lines so a long description doesn't stretch the whole card - open the
+   task (click the card, or the edit button) to read the full text. */
 .task-description {
     padding: 0 var(--space-1);
     font-size: 0.92rem;
@@ -71,13 +73,21 @@
     color: var(--text-color);
     overflow-wrap: anywhere;
     word-break: break-word;
-    white-space: pre-wrap;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
 }
 
-/* Priority now lives on its own row underneath the description */
+/* Priority (and the assignee badge) live on their own row underneath the
+   description, separate from the title/content. */
 .task-priority-row {
     padding: 0 var(--space-1);
     display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
 }
 
 .task-secondary-row {
@@ -128,16 +138,6 @@
     border: 2px dashed var(--primary-color);
     background: transparent;
 }
-
-/* Badges */
-.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; margin-right: 4px; border: 1px solid rgba(255,255,255,0.1); }
-.badge-low { background: rgba(59, 130, 246, 0.12); color: #8ab8f5; }
-.badge-medium { background: rgba(245, 158, 11, 0.12); color: #e7c987; }
-.badge-high { background: rgba(239, 68, 68, 0.12); color: #e6a2a2; }
-.badge-date { background: rgba(107, 114, 128, 0.12); color: #b7bec7; text-transform: none; }
-.badge-tag { background: rgba(139, 92, 246, 0.12); color: #b8a8df; text-transform: lowercase; }
-.badge-recurrence { background: rgba(34, 197, 94, 0.14); color: #9de2b4; text-transform: none; }
-.task-metadata-bar { display: flex; flex-wrap: wrap; gap: var(--space-1); }
 
 .task-link {
     display: inline-flex;
@@ -203,32 +203,4 @@
 .delete-btn:hover {
     color: var(--danger-color) !important;
     background: rgba(218, 54, 51, 0.1) !important;
-}
-
-.task-primary-row,
-.task-id-row,
-.task-title-row,
-.task-secondary-row,
-.task-details,
-.task-actions-row {
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(13, 17, 23, 0.35);
-    border-radius: 10px;
-    padding: var(--space-2) var(--space-3);
-}
-
-.task-primary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-2);
-}
-
-.task-content {
-    font-size: 1rem;
-    line-height: 1.5;
-    color: var(--text-color);
-    font-weight: 400;
-    overflow-wrap: anywhere;
-    word-break: break-word;
 }

@@ -2,7 +2,7 @@
 // Run `npm run db:push` (or generate + migrate) after changing this file.
 import {
     pgTable,
-    uuid,
+    serial,
     text,
     integer,
     bigint,
@@ -12,8 +12,15 @@ import {
     timestamp
 } from 'drizzle-orm/pg-core';
 
+export const users = pgTable('users', {
+    id: serial('id').primaryKey(),
+    name: text('name').notNull(),
+    surname: text('surname').notNull()
+});
+
 export const tasks = pgTable('tasks', {
-    id: uuid('id').defaultRandom().primaryKey(),
+    // Simple auto-incrementing integer id, assigned by the database.
+    id: serial('id').primaryKey(),
 
     // Core content
     title: text('title').notNull(),
@@ -23,6 +30,11 @@ export const tasks = pgTable('tasks', {
     priority: text('priority').notNull().default('medium'),
     dueDate: date('due_date'),
     tags: jsonb('tags').notNull().default([]),
+
+    // Who the task is assigned to (nullable - a task can be unassigned).
+    // If a user is deleted, their tasks simply become unassigned rather
+    // than being deleted too.
+    assignedUserId: integer('assigned_user_id').references(() => users.id, { onDelete: 'set null' }),
 
     // Recurrence
     recurrenceType: text('recurrence_type').notNull().default('none'),
@@ -44,7 +56,7 @@ export const tasks = pgTable('tasks', {
 });
 
 export const history = pgTable('history', {
-    id: uuid('id').defaultRandom().primaryKey(),
+    id: serial('id').primaryKey(),
     action: text('action').notNull(),
     description: text('description').notNull(),
     metadata: jsonb('metadata'),

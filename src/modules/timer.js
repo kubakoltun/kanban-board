@@ -1,12 +1,12 @@
 // Timer Module - mutates the task in memory, then persists it via the API
 import { state } from './state.js';
-import { persistTask } from './tasks.js';
+import { findTask, persistTask } from './tasks.js';
 
 // Track running timers in a Set so the tick loop doesn't have to scan every task
 const activeTimerIds = new Set();
 
 export async function toggleTimer(taskId, action) {
-    const task = state.tasks.find(t => t.id === taskId);
+    const task = findTask(taskId);
     if (!task) return;
 
     if (action === 'start') {
@@ -79,7 +79,7 @@ function finalizeMemoSession(task, sessionDuration, now) {
 }
 
 export async function updateActiveMemoDraft(taskId, note = '') {
-    const task = state.tasks.find(t => t.id === taskId);
+    const task = findTask(taskId);
     if (!task || !task.activeMemoSession) return;
 
     task.activeMemoSession.note = note;
@@ -88,7 +88,7 @@ export async function updateActiveMemoDraft(taskId, note = '') {
 }
 
 export function getTaskMemoHistory(taskId) {
-    const task = state.tasks.find(t => t.id === taskId);
+    const task = findTask(taskId);
     return task ? (task.memoSessions || []) : [];
 }
 

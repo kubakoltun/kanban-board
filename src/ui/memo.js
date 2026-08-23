@@ -1,5 +1,5 @@
 // Session memo autosave (debounced) + the small status/state chips it drives
-import { state } from '../modules/state.js';
+import { findTask } from '../modules/tasks.js';
 import { updateActiveMemoDraft } from '../modules/timer.js';
 
 const memoDraftTimers = new Map();
@@ -28,7 +28,7 @@ function getTaskCardById(taskId) {
 }
 
 export function syncMemoSessionUiState(taskId) {
-    const task = state.tasks.find(t => t.id === taskId);
+    const task = findTask(taskId);
     const card = getTaskCardById(taskId);
     if (!task || !card) return;
 

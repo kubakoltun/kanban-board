@@ -11,7 +11,7 @@
     </head>
     <body>
         <header>
-            <h1>Robootka</h1>
+            <h1>Kanban</h1>
             <div class="header-actions">
                 <button id="history-btn" class="btn-secondary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -184,6 +184,13 @@
                             <textarea id="task-desc" placeholder="What needs to be done?" required></textarea>
                         </div>
 
+                        <div class="form-group">
+                            <label for="task-assigned-user">User</label>
+                             <select id="task-assigned-user" name="assignedUserId">
+                                <option value="">Unassigned</option>
+                            </select>
+                        </div>
+                        
                         <div class="form-group">
                             <label for="task-url">Related URL</label>
                             <input type="url" id="task-url" placeholder="https://example.com" />

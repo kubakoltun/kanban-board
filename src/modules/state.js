@@ -2,6 +2,7 @@
 export const state = {
     tasks: [],
     history: [],
+    users: [],
     activeMemoDraftTaskId: null,
     viewedTaskId: null,   // For UI tracking (which task's logs are open)
     draggedTask: null,    // For Drag & Drop

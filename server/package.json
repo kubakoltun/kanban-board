@@ -10,7 +10,8 @@
         "db:generate": "./bin/drizzle_generate_with_name.sh",
         "db:migrate": "drizzle-kit migrate",
         "db:push": "drizzle-kit push",
-        "db:studio": "drizzle-kit studio"
+        "db:studio": "drizzle-kit studio",
+        "db:seed": "node db/seed.js"
     },
     "dependencies": {
         "cors": "^2.8.5",

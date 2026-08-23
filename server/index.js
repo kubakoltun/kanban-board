@@ -5,6 +5,7 @@ import cors from 'cors';
 import { tasksRouter } from './routes/tasks.js';
 import { historyRouter } from './routes/history.js';
 import { boardRouter } from './routes/board.js';
+import { usersRouter } from './routes/users.js';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -15,6 +16,7 @@ app.use(express.json({ limit: '2mb' }));
 app.use('/api/tasks', tasksRouter);
 app.use('/api/history', historyRouter);
 app.use('/api/board', boardRouter);
+app.use('/api/users', usersRouter);
 
 app.use((err, _req, res, _next) => {
     console.error(err);
