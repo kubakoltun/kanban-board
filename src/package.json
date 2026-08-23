@@ -9,8 +9,7 @@
         "lint": "eslint .",
         "dev": "vite",
         "build": "vite build",
-        "preview": "vite preview",
-        "build-docker-image": "./build-docker-image.sh"
+        "preview": "vite preview"
     },
     "dependencies": {
     },
