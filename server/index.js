@@ -1,13 +1,17 @@
-// Express app entry point
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { tasksRouter } from './routes/tasks.js';
 import { historyRouter } from './routes/history.js';
 import { boardRouter } from './routes/board.js';
 import { usersRouter } from './routes/users.js';
 
-dotenv.config({ path: '../.env' });
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -20,11 +24,21 @@ app.use('/api/history', historyRouter);
 app.use('/api/board', boardRouter);
 app.use('/api/users', usersRouter);
 
+// Error handler
 app.use((err, _req, res, _next) => {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
 });
 
-app.listen(port, () => {
-    console.log(`Kanban API listening on http://localhost:${port}`);
+// Frontend
+const frontendPath = path.join(__dirname, '../dist');
+
+app.use(express.static(frontendPath));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Kanban app listening on port ${port}`);
 });

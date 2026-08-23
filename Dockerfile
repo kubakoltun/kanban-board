@@ -3,12 +3,13 @@
 # ==========================================
 FROM node:24-alpine AS frontend-build
 
-WORKDIR /app
+WORKDIR /app/src
 
-COPY package*.json ./
+COPY src/package.json src/package-lock.json ./
 RUN npm ci
 
-COPY . .
+COPY src/ ./
+
 RUN npm run build
 
 
@@ -19,36 +20,27 @@ FROM node:24-alpine AS backend-build
 
 WORKDIR /app/server
 
-COPY server/package*.json ./
-RUN npm ci --omit=dev
+COPY server/package.json server/package-lock.json ./
+RUN npm ci
 
-COPY server/ .
+COPY server/ ./
 
 
 # ==========================================
-# Backend runtime
+# Production application
 # ==========================================
-FROM node:24-alpine AS backend
+FROM node:24-alpine
 
 WORKDIR /app
 
-COPY --from=backend-build /app/server ./
-
 ENV NODE_ENV=production
+ENV PORT=3001
+
+COPY --from=backend-build /app/server ./server
+COPY --from=frontend-build /app/src/dist ./dist
+
+WORKDIR /app/server
 
 EXPOSE 3001
 
 CMD ["node", "index.js"]
-
-
-# ==========================================
-# Frontend runtime
-# ==========================================
-FROM nginx:alpine AS frontend
-
-COPY --from=frontend-build /app/dist /usr/share/nginx/html
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
