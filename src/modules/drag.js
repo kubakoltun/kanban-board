@@ -45,25 +45,12 @@ async function handleDrop(e, column) {
     const task = state.tasks.find(t => t.id === draggable.dataset.id);
     if (!task) return;
 
-    if (isBlockedMove(task, status)) {
-        renderCallback?.();
-        return;
-    }
-
     if (task.status !== status) {
         await moveTaskToStatus(task, status);
     }
 
     updateTaskOrder();
     renderCallback?.();
-}
-
-function isBlockedMove(task, status) {
-    if (status === 'todo' && task.status !== 'todo') {
-        alert('Tasks cannot be moved back to Todo once started!');
-        return true;
-    }
-    return false;
 }
 
 async function moveTaskToStatus(task, status) {

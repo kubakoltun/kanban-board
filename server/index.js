@@ -2,9 +2,9 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import { tasksRouter } from '../server/routes/tasks.js';
-import { historyRouter } from '../server/routes/history.js';
-import { boardRouter } from '../server/routes/board.js';
+import { tasksRouter } from './routes/tasks.js';
+import { historyRouter } from './routes/history.js';
+import { boardRouter } from './routes/board.js';
 
 const app = express();
 const port = process.env.PORT || 3001;

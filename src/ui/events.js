@@ -196,11 +196,11 @@ function confirmPauseWithoutMemo(card, taskId) {
     if (memoInput) flushMemoDraftSave(taskId, memoInput.value);
     if (note) return true;
 
-    const shouldAddSummary = confirm('No memo summary was added for this session. Do you want to add one before stopping the timer?');
-    if (shouldAddSummary) {
-        memoInput?.focus();
-        return false;
-    }
+    // const shouldAddSummary = confirm('No memo summary was added for this session. Do you want to add one before stopping the timer?');
+    // if (shouldAddSummary) {
+    //     memoInput?.focus();
+    //     return false;
+    // }
     return true;
 }
 

@@ -10,7 +10,7 @@ Dedicated to manage tasks, with simple features:
 
 ## Overview  
 
-### Local run
+### Local run - todo
 ```bash
 # to install all needed libraries
 npm install
@@ -37,7 +37,7 @@ npm start
 - Built-in timer per task
 - Start/Pause controls directly inside cards
 - Automatic timer pause when task moves to:
-  * On Hold
+  * Ready For Review
   * Done
 - Detailed time logs including:
   * Start time
@@ -59,3 +59,12 @@ npm start
 - Export full board data as JSON
 - Import saved board instantly
 
+# TODO
+docker
+docs
+
+1. add a user table and a foreign key to the task table so that in crud there is a dropdown to select what user is assigned to the task. User table can be really simple. Just an ID name and surname
+2. add a input field that would be a dropdown from the user table
+3. The id of the task in a simple number that gets iterated.
+5. the description should be visiable only partly. Right now it presents all the content of description thus making the task really long. The main view should present only some of thedesciption
+6. there is a bug. When adding a due date at a one task it gets propagated to all the tasks in the main view of tasks. In the edit widnow its ok, the due date i the one that is set on the task.

@@ -1,0 +1,25 @@
+{
+    "name": "kanban-server",
+    "version": "1.0.0",
+    "description": "Express API + Drizzle ORM (PostgreSQL) backend for the Kanban board",
+    "type": "module",
+    "main": "index.js",
+    "scripts": {
+        "dev": "node --watch index.js",
+        "start": "node index.js",
+        "db:generate": "./bin/drizzle_generate_with_name.sh",
+        "db:migrate": "drizzle-kit migrate",
+        "db:push": "drizzle-kit push",
+        "db:studio": "drizzle-kit studio"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "drizzle-orm": "^0.45.2",
+        "express": "^4.19.2",
+        "postgres": "^3.4.9"
+    },
+    "devDependencies": {
+        "drizzle-kit": "^0.31.10"
+    }
+}

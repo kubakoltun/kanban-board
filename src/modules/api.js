@@ -1,12 +1,11 @@
 // Fetch-based API client - the only place in the frontend that talks to the backend.
-// There is no localStorage anywhere anymore; the database is the source of truth.
 const API_BASE = '/api';
 
 async function request(path, options = {}) {
     const res = await fetch(`${API_BASE}${path}`, {
         headers: { 'Content-Type': 'application/json' },
         ...options
-    });
+    });    
 
     if (!res.ok) {
         throw new Error(`API request failed: ${options.method || 'GET'} ${path} (${res.status})`);
