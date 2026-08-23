@@ -1,11 +1,13 @@
 // Express app entry point
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import { tasksRouter } from './routes/tasks.js';
 import { historyRouter } from './routes/history.js';
 import { boardRouter } from './routes/board.js';
 import { usersRouter } from './routes/users.js';
+
+dotenv.config({ path: '../.env' });
 
 const app = express();
 const port = process.env.PORT || 3001;
