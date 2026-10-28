@@ -1,6 +1,6 @@
 // Tag chip input widget used inside the task modal
 import { modalElements } from './dom.js';
-import { escapeHtml } from './format.js';
+import { escapeHtml } from '../lib/format.js';
 
 export function setupTagsInput() {
     const { tagsInput, tagsContainer } = modalElements;

@@ -36,11 +36,6 @@ export const tasks = pgTable('tasks', {
     // than being deleted too.
     assignedUserId: integer('assigned_user_id').references(() => users.id, { onDelete: 'set null' }),
 
-    // Recurrence
-    recurrenceType: text('recurrence_type').notNull().default('none'),
-    recurrenceInterval: integer('recurrence_interval').notNull().default(1),
-    recurrenceEnd: date('recurrence_end'),
-
     // Time tracking (durations/timestamps stored as ms since epoch)
     totalTime: bigint('total_time', { mode: 'number' }).notNull().default(0),
     isTracking: boolean('is_tracking').notNull().default(false),
@@ -52,7 +47,8 @@ export const tasks = pgTable('tasks', {
     // Subtasks are simple enough to live as JSON rather than a child table
     subtasks: jsonb('subtasks').notNull().default([]),
 
-    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    completedAt: timestamp('completed_at', { withTimezone: true }),
 });
 
 export const history = pgTable('history', {
@@ -61,4 +57,16 @@ export const history = pgTable('history', {
     description: text('description').notNull(),
     metadata: jsonb('metadata'),
     timestamp: timestamp('timestamp', { withTimezone: true }).notNull().defaultNow()
+});
+
+export const statuses = pgTable('statuses', {
+    key: text('key').primaryKey(),
+    label: text('label').notNull(),
+    position: integer('position').notNull()
+});
+
+export const priorities = pgTable('priorities', {
+    key: text('key').primaryKey(),
+    label: text('label').notNull(),
+    position: integer('position').notNull()
 });

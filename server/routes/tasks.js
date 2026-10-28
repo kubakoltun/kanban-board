@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { eq } from 'drizzle-orm';
 import { db } from '../db/client.js';
 import { tasks } from '../db/schema.js';
+import { toTaskValues } from '../db/task-values.js';
 
 export const tasksRouter = Router();
 
@@ -51,27 +52,4 @@ tasksRouter.delete('/', async (_req, res) => {
 function parseTaskId(rawId) {
     const id = Number.parseInt(rawId, 10);
     return Number.isFinite(id) ? id : null;
-}
-
-function toTaskValues(fields) {
-    return {
-        title: fields.title,
-        content: fields.content,
-        url: fields.url || '',
-        status: fields.status || 'todo',
-        priority: fields.priority || 'medium',
-        dueDate: fields.dueDate || null,
-        tags: fields.tags || [],
-        assignedUserId: fields.assignedUserId || null,
-        recurrenceType: fields.recurrenceType || 'none',
-        recurrenceInterval: fields.recurrenceInterval || 1,
-        recurrenceEnd: fields.recurrenceEnd || null,
-        totalTime: fields.totalTime || 0,
-        isTracking: fields.isTracking || false,
-        lastStartTime: fields.lastStartTime ?? null,
-        timeLogs: fields.timeLogs || [],
-        memoSessions: fields.memoSessions || [],
-        activeMemoSession: fields.activeMemoSession || null,
-        subtasks: fields.subtasks || []
-    };
 }

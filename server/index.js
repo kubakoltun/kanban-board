@@ -1,3 +1,4 @@
+import 'express-async-errors'; 
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
@@ -7,6 +8,8 @@ import { tasksRouter } from './routes/tasks.js';
 import { historyRouter } from './routes/history.js';
 import { boardRouter } from './routes/board.js';
 import { usersRouter } from './routes/users.js';
+import { metaRouter } from './routes/meta.js';
+import { seedLookups } from './db/seed.js';
 
 dotenv.config();
 
@@ -23,6 +26,7 @@ app.use('/api/tasks', tasksRouter);
 app.use('/api/history', historyRouter);
 app.use('/api/board', boardRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/meta', metaRouter);
 
 // Error handler
 app.use((err, _req, res, _next) => {
@@ -39,6 +43,7 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
+await seedLookups();
 app.listen(port, '0.0.0.0', () => {
     console.log(`Kanban app listening on port ${port}`);
 });

@@ -1,7 +1,5 @@
 // Drag & Drop Module
 import { state } from './state.js';
-import { buildNextRecurringTaskFields } from './task-model.js';
-import { createTaskApi } from './api.js';
 import { addToHistory } from './history.js';
 import { toggleTimer } from './timer.js';
 import { findTask, persistTask } from './tasks.js';
@@ -66,22 +64,9 @@ async function moveTaskToStatus(task, status) {
         await persistTask(task);
     }
 
-    if (status === 'done') {
-        await spawnNextRecurrence(task);
-    }
-
     await addToHistory('moved', `Moved "${task.title}" from ${oldStatus} to ${status}`, {
         from: oldStatus, to: status, task: task.title
     });
-}
-
-async function spawnNextRecurrence(task) {
-    const fields = buildNextRecurringTaskFields(task);
-    if (!fields) return;
-
-    const nextTask = await createTaskApi(fields);
-    state.tasks.push(nextTask);
-    await addToHistory('created', `Created recurring task "${nextTask.title}" for ${nextTask.dueDate || 'next cycle'}`);
 }
 
 function updateTaskOrder() {

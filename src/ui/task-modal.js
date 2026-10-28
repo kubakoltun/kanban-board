@@ -1,10 +1,9 @@
 // Add/Edit Task Modal
 import { state } from '../modules/state.js';
 import { generateId } from '../modules/id.js';
-import { normalizeTaskRecurrence } from '../modules/task-model.js';
 import { createTaskFromForm, updateTaskFromForm } from '../modules/tasks.js';
 import { modalElements } from './dom.js';
-import { escapeHtml } from './format.js';
+import { escapeHtml } from '../lib/format.js';
 import { clearTagChips, addTagChip, getTagsFromChips } from './tags-input.js';
 
 function normalizeSubtaskText(value) {
@@ -68,24 +67,6 @@ export function addModalSubtask(text) {
     }
 }
 
-export function syncRecurrenceFieldState() {
-    const { recurrenceTypeInput, recurrenceSettingsContainer, recurrenceIntervalInput, recurrenceEndInput } = modalElements;
-    if (!recurrenceTypeInput) return;
-
-    const isRecurring = recurrenceTypeInput.value !== 'none';
-    recurrenceSettingsContainer?.classList.toggle('is-disabled', !isRecurring);
-
-    if (recurrenceIntervalInput) {
-        recurrenceIntervalInput.disabled = !isRecurring;
-        if (!isRecurring) recurrenceIntervalInput.value = '1';
-    }
-
-    if (recurrenceEndInput) {
-        recurrenceEndInput.disabled = !isRecurring;
-        if (!isRecurring) recurrenceEndInput.value = '';
-    }
-}
-
 // Rebuilds the "Assigned To" <select> options from whatever users were
 // loaded at startup (see modules/users.js), keeping `selectedUserId` picked.
 function populateAssignedUserOptions(selectedUserId) {
@@ -105,8 +86,7 @@ function populateAssignedUserOptions(selectedUserId) {
 function fillModalForExistingTask(task) {
     const {
         title, idInput, idDisplay, idGroup, titleInput, descInput, urlInput,
-        priorityInput, dueDateInput, recurrenceTypeInput,
-        recurrenceIntervalInput, recurrenceEndInput
+        priorityInput, dueDateInput
     } = modalElements;
 
     title.innerText = 'Edit Task';
@@ -120,11 +100,6 @@ function fillModalForExistingTask(task) {
     if (dueDateInput) dueDateInput.value = task.dueDate ? task.dueDate.slice(0, 10) : '';
     populateAssignedUserOptions(task.assignedUserId);
 
-    const recurrence = normalizeTaskRecurrence(task);
-    if (recurrenceTypeInput) recurrenceTypeInput.value = recurrence.recurrenceType;
-    if (recurrenceIntervalInput) recurrenceIntervalInput.value = recurrence.recurrenceInterval;
-    if (recurrenceEndInput) recurrenceEndInput.value = recurrence.recurrenceEnd ? recurrence.recurrenceEnd.slice(0, 10) : '';
-
     (task.tags || []).forEach(tag => addTagChip(tag));
     renderModalSubtasks(task.subtasks || []);
 }
@@ -132,8 +107,7 @@ function fillModalForExistingTask(task) {
 function fillModalForNewTask() {
     const {
         title, idInput, idDisplay, idGroup, titleInput, descInput, urlInput,
-        priorityInput, dueDateInput, recurrenceTypeInput,
-        recurrenceIntervalInput, recurrenceEndInput
+        priorityInput, dueDateInput
     } = modalElements;
 
     title.innerText = 'Add New Task';
@@ -146,9 +120,6 @@ function fillModalForNewTask() {
     if (priorityInput) priorityInput.value = 'medium';
     if (dueDateInput) dueDateInput.value = '';
     populateAssignedUserOptions(null);
-    if (recurrenceTypeInput) recurrenceTypeInput.value = 'none';
-    if (recurrenceIntervalInput) recurrenceIntervalInput.value = '1';
-    if (recurrenceEndInput) recurrenceEndInput.value = '';
 
     renderModalSubtasks([]);
 }
@@ -165,7 +136,6 @@ export function openModal(task = null) {
         fillModalForNewTask();
     }
 
-    syncRecurrenceFieldState();
     const formBody = modalElements.form?.querySelector('.task-form-body');
     if (formBody) formBody.scrollTop = 0;
     modalElements.titleInput.focus();
@@ -197,7 +167,7 @@ export function setupTaskIdSelectOnFocus() {
 function readFormFields() {
     const {
         idInput, titleInput, descInput, urlInput, priorityInput, dueDateInput,
-        assignedUserInput, recurrenceTypeInput, recurrenceIntervalInput, recurrenceEndInput
+        assignedUserInput
     } = modalElements;
 
     return {
@@ -208,9 +178,6 @@ function readFormFields() {
         priority: priorityInput ? priorityInput.value : 'medium',
         dueDate: dueDateInput ? dueDateInput.value : null,
         assignedUserId: assignedUserInput?.value ? Number(assignedUserInput.value) : null,
-        recurrenceType: recurrenceTypeInput ? recurrenceTypeInput.value : 'none',
-        recurrenceInterval: recurrenceIntervalInput ? Number.parseInt(recurrenceIntervalInput.value, 10) : 1,
-        recurrenceEnd: recurrenceEndInput ? (recurrenceEndInput.value || null) : null,
         tags: getTagsFromChips(),
         subtasks: getModalSubtasks()
     };

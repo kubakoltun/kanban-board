@@ -1,15 +1,23 @@
-// Optional convenience script: inserts a couple of sample users so the
-// "assigned to" dropdown has something in it right after first setup.
-// Run with: npm run db:seed
 import { db } from './client.js';
-import { users } from './schema.js';
+import { statuses, priorities, users } from './schema.js';
 
-const sampleUsers = [
-    { name: 'Al', surname: 'Azame' },
-    { name: 'Manty', surname: 'Besterski' },
-    { name: 'Monty', surname: 'Besterski' }
-];
+export async function seedLookups() {
+    await db.insert(statuses).values([
+        { key: 'todo', label: 'To Do', position: 1 },
+        { key: 'progress', label: 'In Progress', position: 2 },
+        { key: 'ready-for-review', label: 'Ready For Review', position: 3 },
+        { key: 'done', label: 'Done', position: 4 }
+    ]).onConflictDoNothing();
 
-const inserted = await db.insert(users).values(sampleUsers).returning();
-console.log(`Seeded ${inserted.length} users:`, inserted);
-process.exit(0);
+    await db.insert(users).values([
+        { name: 'Al', surname: 'Azame' },
+        { name: 'Manty', surname: 'Besterski' },
+        { name: 'Kazany', surname: 'Mereze' },
+    ]).onConflictDoNothing();
+
+    await db.insert(priorities).values([
+        { key: 'high', label: 'High', position: 1 },
+        { key: 'medium', label: 'Medium', position: 2 },
+        { key: 'low', label: 'Low', position: 3 }
+    ]).onConflictDoNothing();
+}

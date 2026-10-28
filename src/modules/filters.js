@@ -3,12 +3,13 @@ import { state } from './state.js';
 
 export function applyFilters(tasks) {
     const searchValue = state.filters.search.trim().toLowerCase();
-    const { priority: priorityValue, tag: tagValue, status: statusValue, dueDate: dueDateValue } = state.filters;
+    const { priority: priorityValue, tag: tagValue, status: statusValue, dueDate: dueDateValue, user: userValue } = state.filters;
 
     return tasks.filter(task =>
         matchesPriority(task, priorityValue) &&
         matchesStatus(task, statusValue) &&
         matchesTag(task, tagValue) &&
+        matchesUser(task, userValue) &&
         matchesSearch(task, searchValue) &&
         matchesDueDateFilter(task, dueDateValue)
     );
@@ -22,6 +23,12 @@ function matchesPriority(task, priorityValue) {
 function matchesStatus(task, statusValue) {
     if (statusValue === 'all') return true;
     return task.status === statusValue;
+}
+
+function matchesUser(task, userValue) {
+    if (userValue === 'all') return true;
+    const userList = (task.user || []).map(user => user.toLowerCase());
+    return userList.includes(userValue);
 }
 
 function matchesTag(task, tagValue) {

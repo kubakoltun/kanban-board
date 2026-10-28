@@ -12,10 +12,6 @@ export const modalElements = {
     priorityInput: document.getElementById('task-priority'),
     dueDateInput: document.getElementById('task-due-date'),
     assignedUserInput: document.getElementById('task-assigned-user'),
-    recurrenceTypeInput: document.getElementById('task-recurrence-type'),
-    recurrenceIntervalInput: document.getElementById('task-recurrence-interval'),
-    recurrenceEndInput: document.getElementById('task-recurrence-end'),
-    recurrenceSettingsContainer: document.querySelector('.recurrence-settings'),
     tagsContainer: document.getElementById('task-tags'),
     tagsInput: document.getElementById('task-tags-input'),
     subtaskInput: document.getElementById('subtask-input'),
@@ -44,6 +40,7 @@ export const filterElements = {
     search: document.getElementById('task-search'),
     priority: document.getElementById('filter-priority'),
     tags: document.getElementById('filter-tags'),
+    users: document.getElementById('filter-users'),
     status: document.getElementById('filter-status'),
     dueDate: document.getElementById('filter-due-date'),
     sortDueDate: document.getElementById('sort-due-date')

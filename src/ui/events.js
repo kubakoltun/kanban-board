@@ -1,14 +1,14 @@
 // Global event wiring: modal triggers, delegated card clicks, filters, memo autosave
-import { exportBoardData, importBoardData } from '../modules/board-io.js';
+import { exportBoardData, importBoardData } from '../lib/board-io.js';
 import { clearHistory } from '../modules/history.js';
 import { toggleTimer } from '../modules/timer.js';
-import { addSubtask, toggleSubtask, removeSubtask, deleteTask, clearAllTasks, findTask } from '../modules/tasks.js';
+import { addSubtask, toggleSubtask, removeSubtask, deleteTask, findTask } from '../modules/tasks.js';
 
 import { modalElements, historyElements, timeLogsElements, analyticsElements } from './dom.js';
 import { renderTasks, setupFilterListeners } from './board.js';
 import {
     openModal, closeModal, handleTaskSubmit,
-    addModalSubtask, renderModalSubtasks, syncRecurrenceFieldState,
+    addModalSubtask, renderModalSubtasks,
     setupModalCloseOnEscape, setupTaskIdSelectOnFocus
 } from './task-modal.js';
 import { setupTagsInput } from './tags-input.js';
@@ -33,9 +33,6 @@ export function setupEventListeners() {
     document.addEventListener('input', handleMemoInput);
     document.addEventListener('blur', handleMemoBlur, true);
     document.addEventListener('keydown', handleInlineSubtaskEnter);
-
-    modalElements.recurrenceTypeInput?.addEventListener('change', syncRecurrenceFieldState);
-    syncRecurrenceFieldState();
 }
 
 function setupModalTriggers() {
@@ -83,14 +80,6 @@ function setupHistoryAndAnalyticsTriggers() {
         if (!confirm('Clear history?')) return;
         await clearHistory();
         renderHistory();
-    });
-}
-
-function setupBoardActionButtons() {
-    document.getElementById('clear-all-btn').addEventListener('click', async () => {
-        if (!confirm('Delete all tasks?')) return;
-        await clearAllTasks();
-        renderTasks();
     });
 }
 

@@ -1,6 +1,4 @@
-# ==========================================
 # Frontend build
-# ==========================================
 FROM node:24-alpine AS frontend-build
 
 WORKDIR /app/src
@@ -13,9 +11,7 @@ COPY src/ ./
 RUN npm run build
 
 
-# ==========================================
 # Backend dependencies
-# ==========================================
 FROM node:24-alpine AS backend-build
 
 WORKDIR /app/server
@@ -26,9 +22,7 @@ RUN npm ci
 COPY server/ ./
 
 
-# ==========================================
 # Production application
-# ==========================================
 FROM node:24-alpine
 
 WORKDIR /app
@@ -43,4 +37,4 @@ WORKDIR /app/server
 
 EXPOSE 3001
 
-CMD ["node", "index.js"]
+CMD ["sh", "-c", "npx drizzle-kit migrate && node index.js"]

@@ -43,7 +43,7 @@ Drizzle ORM provides:
 - Type-safe database queries
 - Database migrations
 - Database schema synchronization
-- Database seeding
+- Database mock
 - Database development tools through Drizzle Studio
 
 
@@ -92,7 +92,7 @@ npm run db:generate
 npm run db:migrate
 
 # To populate the database with initial data:
-npm run db:seed
+npm run db:mock_user
 ```
 
 #### Start the application
@@ -170,6 +170,3 @@ The history view provides color-coded status indicators to make different types 
 ### Export / Import
 - Export full board data as JSON
 - Import saved board
-
-# TODO
-docker

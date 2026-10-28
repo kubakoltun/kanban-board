@@ -3,7 +3,7 @@ import { state } from '../modules/state.js';
 import { findTask } from '../modules/tasks.js';
 import { formatTime } from '../modules/timer.js';
 import { timeLogsElements } from './dom.js';
-import { escapeHtml, getDayGroupLabel } from './format.js';
+import { escapeHtml, getDayGroupLabel } from '../lib/format.js';
 
 export function openTimeLogs(taskId) {
     const task = findTask(taskId);

@@ -68,7 +68,6 @@ function updateColumnCounts(taskCounts, totalCounts, hasActiveFilters) {
 }
 
 // -- Toolbar filters --
-
 export function setupFilterListeners() {
     if (!filterElements.search) return;
 
@@ -86,6 +85,10 @@ export function setupFilterListeners() {
     });
     filterElements.tags?.addEventListener('change', () => {
         state.filters.tag = filterElements.tags.value;
+        renderTasks();
+    });
+    filterElements.users?.addEventListener('change', () => {
+        state.filters.user = filterElements.users.value;
         renderTasks();
     });
     filterElements.status?.addEventListener('change', () => {
@@ -129,6 +132,7 @@ function updateFilterIndicators() {
         [filterElements.search, state.filters.search.trim() !== ''],
         [filterElements.priority, state.filters.priority !== 'all'],
         [filterElements.tags, state.filters.tag !== 'all'],
+        [filterElements.users, state.filters.tag !== 'all'],
         [filterElements.status, state.filters.status !== 'all'],
         [filterElements.dueDate, state.filters.dueDate !== 'all'],
         [filterElements.sortDueDate, state.filters.sortDueDate !== 'none']

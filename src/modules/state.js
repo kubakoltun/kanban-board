@@ -10,6 +10,7 @@ export const state = {
         search: '',
         priority: 'all',
         tag: 'all',
+        user: 'all',
         status: 'all',
         dueDate: 'all',
         sortDueDate: 'none'

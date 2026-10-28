@@ -2,7 +2,7 @@
 import { state } from '../modules/state.js';
 import { formatTime } from '../modules/timer.js';
 import { findUser, formatUserName } from '../modules/users.js';
-import { escapeHtml, normalizeUrl, formatUrlLabel } from './format.js';
+import { escapeHtml, normalizeUrl, formatUrlLabel } from '../lib/format.js';
 import { getIcon } from './icons.js';
 import { getSessionStateMeta, getMemoSaveStatusText } from './memo.js';
 import { handleEditButtonClick } from './events.js';
@@ -166,37 +166,19 @@ function buildTimerControl(task) {
 }
 
 // -- Details section pieces --
-
 function buildUrlLink(task) {
     if (!task.url) return '';
     return `<a class="task-link" href="${escapeHtml(normalizeUrl(task.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(formatUrlLabel(task.url))}</a>`;
 }
 
 function buildMetadataBar(task) {
-    const dateHtml = task.dueDate ? `<span class="badge badge-date">📅 ${new Date(task.dueDate).toLocaleDateString()}</span>` : '';
-    const recurrenceText = formatRecurrenceBadge(task);
-    const recurrenceHtml = recurrenceText ? `<span class="badge badge-recurrence">${escapeHtml(recurrenceText)}</span>` : '';
+    const dateHtml = task.dueDate ? `<span class="badge badge-date">${new Date(task.dueDate).toLocaleDateString()}</span>` : '';
     const tagsHtml = (task.tags || []).map(tag => `<span class="badge badge-tag">#${tag}</span>`).join('');
 
-    if (!dateHtml && !recurrenceHtml && !tagsHtml) {
+    if (!dateHtml && !tagsHtml) {
         return '<div class="task-metadata-bar"><span class="task-muted">No metadata added</span></div>';
     }
-    return `<div class="task-metadata-bar">${dateHtml} ${recurrenceHtml} ${tagsHtml}</div>`;
-}
-
-const RECURRENCE_UNIT_LABELS = {
-    daily: ['day', 'days'],
-    weekly: ['week', 'weeks'],
-    monthly: ['month', 'months']
-};
-
-function formatRecurrenceBadge(task) {
-    if (!task.recurrenceType || task.recurrenceType === 'none') return '';
-
-    const [single, plural] = RECURRENCE_UNIT_LABELS[task.recurrenceType] || ['cycle', 'cycles'];
-    const interval = task.recurrenceInterval || 1;
-    const intervalText = interval === 1 ? `every ${single}` : `every ${interval} ${plural}`;
-    return `Repeats ${intervalText}`;
+    return `<div class="task-metadata-bar">${dateHtml} ${tagsHtml}</div>`;
 }
 
 function getSubtaskProgress(task) {
@@ -286,7 +268,6 @@ function hasDetails(task) {
     return Boolean(
         task.url ||
         task.dueDate ||
-        (task.recurrenceType && task.recurrenceType !== 'none') ||
         (task.tags && task.tags.length) ||
         (task.subtasks && task.subtasks.length) ||
         task.isTracking

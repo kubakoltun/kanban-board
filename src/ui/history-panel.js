@@ -2,7 +2,7 @@
 import { state } from '../modules/state.js';
 import { formatTimeAgo } from '../modules/history.js';
 import { historyElements } from './dom.js';
-import { escapeHtml, formatStatus } from './format.js';
+import { escapeHtml, formatStatus } from '../lib/format.js';
 
 const ACTION_META = {
     created: {

@@ -2,7 +2,7 @@
 import { state } from '../modules/state.js';
 import { formatTime } from '../modules/timer.js';
 import { analyticsElements } from './dom.js';
-import { getWeekStart } from './format.js';
+import { getWeekStart } from '../lib/format.js';
 
 const STATUS_LABELS = {
     todo: 'To Do',
