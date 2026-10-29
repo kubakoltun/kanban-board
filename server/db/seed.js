@@ -6,13 +6,14 @@ export async function seedLookups() {
         { key: 'todo', label: 'To Do', position: 1 },
         { key: 'progress', label: 'In Progress', position: 2 },
         { key: 'ready-for-review', label: 'Ready For Review', position: 3 },
-        { key: 'done', label: 'Done', position: 4 }
+        { key: 'done', label: 'Done', position: 4 },
+        { key: 'rejected', label: 'Rejected', position: 5 }
     ]).onConflictDoNothing();
 
     await db.insert(users).values([
-        { name: 'Al', surname: 'Azame' },
-        { name: 'Manty', surname: 'Besterski' },
-        { name: 'Kazany', surname: 'Mereze' },
+        { id: 1, name: 'Al', surname: 'Azame' },
+        { id: 2, name: 'Manty', surname: 'Besterski' },
+        { id: 3, name: 'Kazany', surname: 'Mereze' },
     ]).onConflictDoNothing();
 
     await db.insert(priorities).values([
