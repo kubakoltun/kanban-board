@@ -1,17 +1,17 @@
 /* Per-card timer display + controls */
 .task-timer {
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.35);
+    border: 1px solid rgba(var(--text-rgb), 0.15);
+    box-shadow: inset 0 1px 2px rgba(var(--text-rgb), 0.15);
     position: relative;
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .task-timer.is-running {
-    border-color: rgba(88, 166, 255, 0.45);
+    border-color: rgba(var(--primary-rgb), 0.6);
     box-shadow:
-        inset 0 2px 4px rgba(0,0,0,0.8),
-        0 0 15px rgba(88, 166, 255, 0.15);
-    background: linear-gradient(90deg, #0d1117, #161b22);
+        inset 0 2px 4px rgba(var(--text-rgb), 0.2),
+        0 0 15px rgba(var(--primary-rgb), 0.2);
+    background: linear-gradient(90deg, rgba(var(--surface-rgb), 0.4), rgba(var(--surface-rgb), 0.2));
 }
 .task-timer.is-running::before {
     content: '';
@@ -20,7 +20,7 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: conic-gradient(transparent, rgba(88, 166, 255, 0.1), transparent 30%);
+    background: conic-gradient(transparent, rgba(var(--primary-rgb), 0.15), transparent 30%);
     animation: rotate-sheen 4s linear infinite;
     z-index: 1;
     pointer-events: none;
@@ -31,7 +31,7 @@
 .timer-display {
     font-family: 'SF Mono', 'Roboto Mono', monospace;
     font-size: 1rem;
-    color: #8b949e;
+    color: var(--text-secondary);
     font-weight: 600;
     letter-spacing: 0.5px;
     z-index: 2;
@@ -58,16 +58,16 @@
     color: var(--primary-color);
 }
 .task-timer.is-running .timer-display {
-    color: #58a6ff;
-    text-shadow: 0 0 8px rgba(88, 166, 255, 0.4);
+    color: var(--primary);
+    text-shadow: 0 0 8px rgba(var(--primary-rgb), 0.3);
 }
 .recording-dot {
     width: 8px;
     height: 8px;
-    background-color: #f78166;
+    background-color: var(--support);
     border-radius: 50%;
     display: inline-block;
-    box-shadow: 0 0 6px #f78166;
+    box-shadow: 0 0 6px var(--support);
     animation: blink-dot 1s infinite ease-in-out;
 }
 @keyframes blink-dot {
@@ -88,22 +88,22 @@
     color: var(--text-secondary);
 }
 .timer-btn:hover, .view-logs-btn:hover {
-    background: rgba(255,255,255,0.1);
-    color: white;
+    background: rgba(var(--surface-rgb), 0.45);
+    color: var(--text);
     transform: scale(1.1);
 }
 .start-btn:hover {
-    background: rgba(35, 134, 54, 0.2);
-    color: #3fb950;
-    box-shadow: 0 0 10px rgba(35, 134, 54, 0.2);
+    background: rgba(var(--primary-rgb), 0.2);
+    color: var(--primary);
+    box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.25);
 }
 .pause-btn:hover {
-    background: rgba(210, 153, 34, 0.2);
-    color: #d29922;
-    box-shadow: 0 0 10px rgba(210, 153, 34, 0.2);
+    background: rgba(var(--support-rgb), 0.2);
+    color: var(--support);
+    box-shadow: 0 0 10px rgba(var(--support-rgb), 0.25);
 }
 .view-logs-btn:hover {
-    background: rgba(88, 166, 255, 0.2);
-    color: #58a6ff;
-    box-shadow: 0 0 10px rgba(88, 166, 255, 0.2);
+    background: rgba(var(--primary-rgb), 0.2);
+    color: var(--primary);
+    box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.25);
 }

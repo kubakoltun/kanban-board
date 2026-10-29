@@ -52,27 +52,27 @@
 /* Timeline colors */
 
 .action-created .history-icon-wrapper {
-    border-color: var(--success-color);
-    background: rgba(35, 134, 54, 0.2);
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.25);
 }
 
 .action-moved .history-icon-wrapper {
-    border-color: var(--primary-color);
-    background: rgba(88, 166, 255, 0.2);
+    border-color: var(--support);
+    background: rgba(var(--support-rgb), 0.25);
 }
 
 .action-deleted .history-icon-wrapper {
-    border-color: var(--danger-color);
-    background: rgba(218, 54, 51, 0.2);
+    border-color: var(--text);
+    background: rgba(var(--text-rgb), 0.25);
 }
 
 .action-timer .history-icon-wrapper {
-    border-color: var(--warning-color);
-    background: rgba(210, 153, 34, 0.2);
+    border-color: var(--surface);
+    background: rgba(var(--surface-rgb), 0.5);
 }
 
 .action-cleared .history-icon-wrapper {
-    border-color: #ff7b72;
+    border-color: var(--text-secondary);
 }
 
 
@@ -81,8 +81,8 @@
 .history-content {
     background: linear-gradient(
         145deg,
-        rgba(22, 27, 34, 0.7),
-        rgba(13, 17, 23, 0.8)
+        rgba(var(--surface-rgb), 0.22),
+        rgba(var(--bg-rgb), 0.85)
     );
     border: 1px solid var(--glass-border);
     border-radius: 8px;
@@ -91,37 +91,37 @@
     font-size: 0.9rem;
     color: var(--text-color);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(var(--text-rgb), 0.10);
     border-left: 3px solid transparent;
 }
 
 .history-item:hover .history-content {
     transform: translateX(4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    background: rgba(33, 38, 45, 0.8);
+    box-shadow: 0 4px 12px rgba(var(--text-rgb), 0.18);
+    background: rgba(var(--surface-rgb), 0.35);
 }
 
 
 /* Content accents */
 
 .action-created .history-content {
-    border-left-color: var(--success-color);
+    border-left-color: var(--primary);
 }
 
 .action-moved .history-content {
-    border-left-color: var(--primary-color);
+    border-left-color: var(--support);
 }
 
 .action-deleted .history-content {
-    border-left-color: var(--danger-color);
+    border-left-color: var(--text);
 }
 
 .action-timer .history-content {
-    border-left-color: var(--warning-color);
+    border-left-color: var(--surface);
 }
 
 .action-cleared .history-content {
-    border-left-color: #ff7b72;
+    border-left-color: var(--text-secondary);
 }
 
 
@@ -133,7 +133,7 @@
     align-items: center;
     margin-bottom: 0.5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+    border-bottom: 1px dashed rgba(var(--text-rgb), 0.15);
 }
 
 .history-action-label {
@@ -141,29 +141,29 @@
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(var(--text-rgb), 0.08);
     padding: 2px 6px;
     border-radius: 4px;
 }
 
 .action-created .history-action-label {
-    color: var(--success-color);
-    background: rgba(35, 134, 54, 0.1);
+    color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.12);
 }
 
 .action-moved .history-action-label {
-    color: var(--primary-color);
-    background: rgba(88, 166, 255, 0.1);
+    color: var(--support);
+    background: rgba(var(--support-rgb), 0.12);
 }
 
 .action-deleted .history-action-label {
-    color: var(--danger-color);
-    background: rgba(218, 54, 51, 0.1);
+    color: var(--text);
+    background: rgba(var(--text-rgb), 0.12);
 }
 
 .action-timer .history-action-label {
-    color: var(--warning-color);
-    background: rgba(210, 153, 34, 0.1);
+    color: var(--text);
+    background: rgba(var(--surface-rgb), 0.4);
 }
 
 .history-time {

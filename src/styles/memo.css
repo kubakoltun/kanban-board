@@ -15,7 +15,7 @@
     min-height: 76px;
     border-radius: 10px;
     border: 1px solid var(--glass-border);
-    background: rgba(13, 17, 23, 0.65);
+    background: rgba(var(--surface-rgb), 0.18);
     color: var(--text-color);
     padding: 0.65rem 0.75rem;
     resize: vertical;
@@ -25,7 +25,7 @@
 .active-memo-input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.15);
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
 }
 .session-state-chip {
     display: inline-flex;
@@ -33,39 +33,39 @@
     justify-content: center;
     padding: 0.16rem 0.5rem;
     border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background: rgba(110, 118, 129, 0.2);
-    color: #f0f6fc;
+    border: 1px solid rgba(var(--text-rgb), 0.3);
+    background: rgba(var(--text-rgb), 0.10);
+    color: var(--text);
     font-size: 0.68rem;
     letter-spacing: 0.2px;
     font-weight: 700;
     text-transform: uppercase;
 }
 .session-state-chip--recording {
-    border-color: rgba(247, 129, 102, 0.6);
-    background: rgba(247, 129, 102, 0.2);
-    color: #ffd8d1;
+    border-color: var(--support);
+    background: rgba(var(--support-rgb), 0.18);
+    color: var(--support);
 }
 .session-state-chip--paused {
-    border-color: rgba(210, 153, 34, 0.5);
-    background: rgba(210, 153, 34, 0.18);
-    color: #ffe6a7;
+    border-color: var(--surface);
+    background: rgba(var(--surface-rgb), 0.4);
+    color: var(--text);
 }
 .session-state-chip--awaiting {
-    border-color: rgba(88, 166, 255, 0.55);
-    background: rgba(88, 166, 255, 0.2);
-    color: #d8ebff;
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.18);
+    color: var(--primary);
 }
 .memo-save-status {
     min-height: 1rem;
     margin: 0;
     font-size: 0.74rem;
     font-weight: 600;
-    color: #7ee787;
+    color: var(--primary);
 }
 .memo-guidance-text {
     margin: 0;
-    color: #c9d1d9;
+    color: var(--text-secondary);
     font-size: 0.74rem;
     line-height: 1.35;
 }
@@ -83,19 +83,19 @@
     border: 1px solid var(--glass-border);
     border-radius: 10px;
     padding: 0.75rem;
-    background: rgba(13, 17, 23, 0.4);
+    background: rgba(var(--surface-rgb), 0.15);
     display: grid;
     gap: 0.6rem;
 }
 .memo-history-entry {
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(var(--text-rgb), 0.12);
     border-radius: 8px;
     padding: 0.65rem;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(var(--bg-rgb), 0.6);
 }
 .memo-history-entry.is-draft {
-    border-color: rgba(88, 166, 255, 0.35);
-    background: rgba(88, 166, 255, 0.08);
+    border-color: rgba(var(--primary-rgb), 0.5);
+    background: rgba(var(--primary-rgb), 0.10);
 }
 .memo-history-meta {
     display: flex;

@@ -1,12 +1,12 @@
 /* Small colored labels used on task cards (priority, date, tags, assignee) */
-.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; margin-right: 4px; border: 1px solid rgba(255,255,255,0.1); }
-.badge-low { background: rgba(59, 130, 246, 0.12); color: #8ab8f5; }
-.badge-medium { background: rgba(245, 158, 11, 0.12); color: #e7c987; }
-.badge-high { background: rgba(239, 68, 68, 0.12); color: #e6a2a2; }
-.badge-date { background: rgba(107, 114, 128, 0.12); color: #b7bec7; text-transform: none; }
-.badge-tag { background: rgba(139, 92, 246, 0.12); color: #b8a8df; text-transform: lowercase; }
-.badge-assignee { background: rgba(88, 166, 255, 0.12); color: #9cc8ff; text-transform: none; }
-.badge-unassigned { background: rgba(110, 118, 129, 0.14); color: var(--text-secondary); text-transform: none; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; margin-right: 4px; border: 1px solid rgba(var(--text-rgb), 0.15); }
+.badge-low { background: rgba(var(--surface-rgb), 0.35); color: var(--text); }
+.badge-medium { background: rgba(var(--primary-rgb), 0.18); color: var(--primary); border-color: rgba(var(--primary-rgb), 0.4); }
+.badge-high { background: var(--support); color: var(--bg); border-color: var(--support); }
+.badge-date { background: rgba(var(--text-rgb), 0.08); color: var(--text-secondary); text-transform: none; }
+.badge-tag { background: rgba(var(--support-rgb), 0.12); color: var(--support); text-transform: lowercase; }
+.badge-assignee { background: rgba(var(--primary-rgb), 0.15); color: var(--primary); text-transform: none; }
+.badge-unassigned { background: rgba(var(--text-rgb), 0.08); color: var(--text-secondary); text-transform: none; }
 
 .task-metadata-bar { display: flex; flex-wrap: wrap; gap: var(--space-1); }
 
@@ -23,22 +23,22 @@
     vertical-align: middle;
 }
 .status-todo {
-    background: rgba(110, 118, 129, 0.2);
-    color: #8b949e;
-    border-color: rgba(110, 118, 129, 0.2);
+    background: rgba(var(--text-rgb), 0.10);
+    color: var(--text);
+    border-color: rgba(var(--text-rgb), 0.25);
 }
 .status-progress {
-    background: rgba(88, 166, 255, 0.15);
-    color: #58a6ff;
-    border-color: rgba(88, 166, 255, 0.2);
+    background: rgba(var(--primary-rgb), 0.18);
+    color: var(--primary);
+    border-color: rgba(var(--primary-rgb), 0.4);
 }
 .status-ready-for-review {
-    background: rgba(210, 153, 34, 0.15);
-    color: #d29922;
-    border-color: rgba(210, 153, 34, 0.2);
+    background: rgba(var(--support-rgb), 0.18);
+    color: var(--support);
+    border-color: rgba(var(--support-rgb), 0.45);
 }
 .status-done {
-    background: rgba(35, 134, 54, 0.15);
-    color: #3fb950;
-    border-color: rgba(35, 134, 54, 0.2);
+    background: var(--primary);
+    color: var(--bg);
+    border-color: var(--primary);
 }

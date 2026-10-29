@@ -6,7 +6,7 @@
     gap: 6px;
     padding: 8px 12px;
     min-height: 48px;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(var(--surface-rgb), 0.18);
     border: 1px solid var(--glass-border);
     border-radius: 8px;
     cursor: text;
@@ -14,7 +14,7 @@
 }
 .tags-input-container:focus-within {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.25);
 }
 .tags-input-container input {
     flex: 1;
@@ -34,18 +34,18 @@
 }
 .tags-input-container input::placeholder {
     color: var(--text-secondary);
-    opacity: 0.6;
+    opacity: 0.7;
 }
 .tag-chip {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 4px 8px 4px 10px;
-    background: rgba(139, 92, 246, 0.2);
-    border: 1px solid rgba(139, 92, 246, 0.3);
+    background: rgba(var(--support-rgb), 0.15);
+    border: 1px solid rgba(var(--support-rgb), 0.4);
     border-radius: 16px;
     font-size: 0.85rem;
-    color: #a78bfa;
+    color: var(--support);
     animation: chip-pop-in 0.15s ease-out;
 }
 @keyframes chip-pop-in {
@@ -59,7 +59,7 @@
     width: 16px;
     height: 16px;
     border: none;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--support-rgb), 0.15);
     border-radius: 50%;
     color: inherit;
     cursor: pointer;
@@ -67,8 +67,8 @@
     transition: all 0.15s;
 }
 .tag-chip-remove:hover {
-    background: rgba(239, 68, 68, 0.3);
-    color: #f87171;
+    background: var(--support);
+    color: var(--bg);
 }
 .tag-chip-remove svg {
     width: 10px;

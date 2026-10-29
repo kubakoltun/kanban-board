@@ -4,7 +4,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.6);
+    background: rgba(var(--text-rgb), 0.55);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 1000;
@@ -21,7 +21,7 @@
     opacity: 1;
 }
 .modal-content {
-    background: #161b22;
+    background: var(--bg);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
     padding: 2rem;
@@ -59,10 +59,10 @@
 .task-modal-header {
     position: sticky;
     top: 0;
-    background: linear-gradient(180deg, #161b22 0%, rgba(22, 27, 34, 0.97) 100%);
+    background: linear-gradient(180deg, var(--bg) 0%, rgba(var(--bg-rgb), 0.97) 100%);
     z-index: 2;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(240, 246, 252, 0.08);
+    border-bottom: 1px solid rgba(var(--text-rgb), 0.15);
     margin-bottom: 1rem;
 }
 .task-modal-header h2 {
@@ -84,7 +84,7 @@
 .form-group textarea {
     width: 100%;
     padding: 1.2rem;
-    background: rgba(13, 17, 23, 0.5);
+    background: rgba(var(--surface-rgb), 0.15);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
     color: var(--text-color);
@@ -94,18 +94,18 @@
     resize: vertical;
     min-height: 140px;
     transition: all 0.3s ease;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: inset 0 2px 4px rgba(var(--text-rgb), 0.10);
 }
 .form-group textarea:focus {
     outline: none;
     border-color: var(--primary-color);
-    background: rgba(13, 17, 23, 0.8);
+    background: rgba(var(--surface-rgb), 0.25);
     box-shadow:
-        inset 0 2px 4px rgba(0,0,0,0.2),
-        0 0 0 3px rgba(88, 166, 255, 0.15);
+        inset 0 2px 4px rgba(var(--text-rgb), 0.10),
+        0 0 0 3px rgba(var(--primary-rgb), 0.2);
 }
 .form-group textarea::placeholder {
-    color: rgba(139, 148, 158, 0.5);
+    color: rgba(var(--text-rgb), 0.5);
 }
 
 .modal-actions {
@@ -121,7 +121,7 @@
     position: sticky;
     bottom: 0;
     padding-bottom: 0.25rem;
-    background: linear-gradient(0deg, #161b22 58%, rgba(22, 27, 34, 0.88) 100%);
+    background: linear-gradient(0deg, var(--bg) 58%, rgba(var(--bg-rgb), 0.88) 100%);
 }
 .modal-actions button {
     padding: 0.8rem 1.5rem;
@@ -134,9 +134,9 @@
     border: 1px solid transparent;
 }
 .modal-actions .btn-secondary:hover {
-    background: rgba(255,255,255,0.05);
+    background: rgba(var(--surface-rgb), 0.3);
     color: var(--text-color);
-    border-color: var(--text-secondary);
+    border-color: var(--support);
 }
 
 #task-form {
@@ -151,17 +151,17 @@
     margin-right: -0.35rem;
     min-height: 0;
     scrollbar-width: thin;
-    scrollbar-color: rgba(139, 148, 158, 0.7) rgba(13, 17, 23, 0.35);
+    scrollbar-color: rgba(var(--text-rgb), 0.45) rgba(var(--surface-rgb), 0.2);
 }
 .task-form-body::-webkit-scrollbar {
     width: 9px;
 }
 .task-form-body::-webkit-scrollbar-track {
-    background: rgba(13, 17, 23, 0.35);
+    background: rgba(var(--surface-rgb), 0.2);
     border-radius: 8px;
 }
 .task-form-body::-webkit-scrollbar-thumb {
-    background: rgba(139, 148, 158, 0.65);
+    background: rgba(var(--text-rgb), 0.45);
     border-radius: 8px;
 }
 

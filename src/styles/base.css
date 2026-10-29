@@ -1,18 +1,33 @@
 /* Design tokens, resets, and page-level background */
 :root {
-    --bg-color: #0d1117;
-    --text-color: #e6edf3;
-    --text-secondary: #8b949e;
-    --column-bg: rgba(22, 27, 34, 0.6);
-    --card-bg: rgba(33, 38, 45, 0.95);
-    --primary-color: #58a6ff;
-    --success-color: #238636;
-    --danger-color: #da3633;
-    --warning-color: #d29922;
-    --glass-border: rgba(240, 246, 252, 0.1);
-    --shadow-sm: 0 4px 6px rgba(0,0,0,0.1);
-    --shadow-md: 0 8px 24px rgba(0,0,0,0.2);
-    --shadow-lg: 0 12px 48px rgba(0,0,0,0.4);
+    /* Palette the colors used in the app */
+    --bg: #DAE0E7;        /* Background */
+    --surface: #89A1D1;   /* Surface    */
+    --primary: #3C60D7;   /* Primary    */
+    --support: #3648BF;   /* Support    */
+    --text: #1D3853;      /* Text       */
+
+    /* RGB triplets of the palette, for transparent variants: rgba(var(--text-rgb), 0.2) */
+    --bg-rgb: 218, 224, 231;
+    --surface-rgb: 137, 161, 209;
+    --primary-rgb: 60, 96, 215;
+    --support-rgb: 54, 72, 191;
+    --text-rgb: 29, 56, 83;
+
+    /* Legacy token names, now mapped onto the palette */
+    --bg-color: var(--bg);
+    --text-color: var(--text);
+    --text-secondary: rgba(var(--text-rgb), 0.72);
+    --column-bg: rgba(var(--surface-rgb), 0.35);
+    --card-bg: var(--bg);
+    --primary-color: var(--primary);
+    --success-color: var(--primary);
+    --danger-color: var(--support);
+    --warning-color: var(--text);
+    --glass-border: rgba(var(--text-rgb), 0.18);
+    --shadow-sm: 0 4px 6px rgba(var(--text-rgb), 0.10);
+    --shadow-md: 0 8px 24px rgba(var(--text-rgb), 0.15);
+    --shadow-lg: 0 12px 48px rgba(var(--text-rgb), 0.30);
     --radius: 12px;
     --space-1: 0.35rem;
     --space-2: 0.65rem;
@@ -32,8 +47,8 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     background-image:
-        radial-gradient(at 0% 0%, rgba(88, 166, 255, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(210, 153, 34, 0.15) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(var(--surface-rgb), 0.45) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(var(--primary-rgb), 0.15) 0px, transparent 50%);
     background-attachment: fixed;
     min-height: 100vh;
 }
@@ -55,13 +70,14 @@ button {
     background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--text-rgb), 0.25);
     border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(var(--text-rgb), 0.4);
 }
 
 select>option {
-    background-color: #0f151c;
+    background-color: var(--bg);
+    color: var(--text);
 }
