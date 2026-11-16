@@ -10,7 +10,6 @@
         "db:generate": "./bin/drizzle_generate_with_name.sh",
         "db:migrate": "drizzle-kit migrate",
         "db:push": "drizzle-kit push",
-        "db:studio": "drizzle-kit studio",
         "db:mock_user": "node db/mock_user.js"
     },
     "dependencies": {

@@ -1,5 +1,5 @@
 // Optional convenience script: inserts a couple of sample users so the
-// "assigned to" dropdown has something in it right after first setup.
+// "assigned to" dropdown has something in it 
 // Run with: npm run db:mock_user
 import { db } from './client.js';
 import { users } from './schema.js';

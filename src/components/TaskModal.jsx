@@ -134,8 +134,15 @@ export function TaskModal({ task = null, meta, onClose }) {
                                                onChange={e => patchSubtask(s.key, { done: e.target.checked })} />
                                         <span className={`subtask-text ${s.done ? 'is-done' : ''}`}>{s.text}</span>
                                     </label>
-                                    <button type="button" className="modal-subtask-remove" aria-label="Remove subtask"
-                                            onClick={() => removeSubtask(s.key)}>Close</button>
+                                    {/* todo i lost styles for this */}
+                                    <button 
+                                        type="button" 
+                                        className="modal-subtask-remove" 
+                                        aria-label="Remove subtask"
+                                        onClick={() => removeSubtask(s.key)}
+                                    >
+                                        Remove subtask
+                                    </button>
                                 </li>
                             ))}
                         </ul>

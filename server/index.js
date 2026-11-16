@@ -9,7 +9,6 @@ import { historyRouter } from './routes/history.js';
 import { boardRouter } from './routes/board.js';
 import { usersRouter } from './routes/users.js';
 import { metaRouter } from './routes/meta.js';
-import { seedLookups } from './db/seed.js';
 
 dotenv.config();
 
@@ -43,7 +42,6 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
-await seedLookups();
 app.listen(port, '0.0.0.0', () => {
     console.log(`Kanban app listening on port ${port}`);
 });

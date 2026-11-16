@@ -27,14 +27,16 @@ FROM node:24-alpine
 
 WORKDIR /app
 
+ARG PORT
+
 ENV NODE_ENV=production
-ENV PORT=3001
+ENV PORT=$PORT
 
 COPY --from=backend-build /app/server ./server
 COPY --from=frontend-build /app/src/dist ./dist
 
 WORKDIR /app/server
 
-EXPOSE 3001
+EXPOSE $PORT
 
-CMD ["sh", "-c", "npx drizzle-kit migrate && node index.js"]
+CMD ["sh", "-c", "node index.js"]
