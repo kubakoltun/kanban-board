@@ -15,7 +15,7 @@ header {
 
 h1 {
     font-weight: 800;
-    font-size: 1.5rem;
+    font-size: 1.15rem;       /* was 1.5rem */
     letter-spacing: -0.5px;
     background: var(--text);
     background-clip: text;
@@ -57,13 +57,15 @@ main {
     padding: 1.5rem 3rem 2rem;
     overflow-x: auto;
     overflow-y: hidden;
-    height: calc(100vh - 154px);
+    flex: 1;
+    min-height: 0;
 }
 
 .kanban-board {
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 420px;
+    grid-template-rows: minmax(0, 1fr);   /* row is exactly as tall as the board */
     gap: 1.5rem;
     height: 100%;
     width: max-content;
@@ -80,16 +82,18 @@ main {
     -webkit-backdrop-filter: blur(12px);
     transition: border-color 0.2s;
     max-height: 100%;
+    min-width: 0;
+    min-height: 0;
 }
 .column-header {
-    padding: 1.2rem;
-    border-bottom: 1px solid var(--glass-border);
-    font-weight: 600;
-    font-size: 0.95rem;
+    padding: 0.5rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: var(--text-color);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(var(--bg-rgb), 0.8);
 }
 .count {
     background: rgba(var(--text-rgb), 0.15);
@@ -106,6 +110,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    min-height: 0;
 }
 
 /* Empty State */

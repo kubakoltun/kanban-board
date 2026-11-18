@@ -59,7 +59,7 @@
     display: flex;
     gap: 0.5rem;
     background: var(--surface);
-    padding: 4px 6px;
+    padding: 2px 4px;      
     border-radius: 50px;
     border: 1px solid var(--glass-border);
     align-items: center;
@@ -70,7 +70,7 @@
     background: transparent;
     border: none;
     border-radius: 30px;
-    padding: 0.5rem 1rem;
+    padding: 0.3rem 0.8rem;
     font-size: 0.85rem;
     color: var(--text);
 }
@@ -80,6 +80,13 @@
     color: var(--text-color);
     box-shadow: none;
     transform: none;
+}
+.header-actions #add-task-btn {       /* needs the ID: #add-task-btn beats .header-actions .btn-primary */
+    border-radius: 30px;
+    padding: 0.3rem 1rem;
+    font-size: 0.8rem;
+    box-shadow: none;
+    margin-left: 0.25rem;
 }
 .header-actions .btn-primary {
     border-radius: 30px;

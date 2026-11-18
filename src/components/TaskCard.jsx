@@ -9,6 +9,14 @@ import {
 } from '../hooks/queries.js';
 
 const MS_IN_DAY = 86_400_000;
+const DESCRIPTION_WORD_LIMIT = 6;
+
+function shortDescription(text = '') {
+    const words = text.trim().split(/\s+/).filter(Boolean);
+    return words.length > DESCRIPTION_WORD_LIMIT
+        ? `${words.slice(0, DESCRIPTION_WORD_LIMIT).join(' ')}...`
+        : text;
+}
 
 function dueClass(task) {
     const due = task.dueDate ? new Date(task.dueDate).getTime() : NaN;
@@ -157,7 +165,7 @@ export function TaskCard({ task, meta, onEdit, onLogs }) {
         >
             <CopyId id={task.id} />
             <div className="task-title-row"><div className="task-title">{task.title}</div></div>
-            <p className="task-description" title={task.content}>{task.content}</p>
+            <p className="task-description">{shortDescription(task.content)}</p>
             <div className="task-priority-row">
                 {assignee ? 
                     <span className="badge badge-assignee" title={`${assignee.name} ${assignee.surname}`}>

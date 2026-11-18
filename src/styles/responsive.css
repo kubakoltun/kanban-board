@@ -1,5 +1,4 @@
 /* Tablet */
-
 @media (max-width: 1200px) {
     .kanban-board {
         grid-template-columns: repeat(2, 1fr);
@@ -16,7 +15,6 @@
 
 
 /* Mobile */
-
 @media (max-width: 768px) {
     header {
         flex-direction: column;
@@ -58,7 +56,6 @@
 
 
 /* Small mobile */
-
 @media (max-width: 640px) {
     .modal {
         padding: 0.75rem;
@@ -133,9 +130,7 @@
         padding: 1rem;
     }
 
-
     /* Time logs */
-
     .log-entry {
         gap: 0.7rem;
     }
@@ -153,12 +148,10 @@
 
 
     /* Activity history */
-
     .history-text {
         line-height: 1.8;
         word-break: break-word;
     }
-
     .history-text .status-badge {
         margin: 4px 2px;
         display: inline-flex;

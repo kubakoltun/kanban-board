@@ -1,4 +1,9 @@
 /* Design tokens, resets, and page-level background */
+#root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
 :root {
     /* Palette the colors used in the app */
     --bg: #DAE0E7;        /* Background */

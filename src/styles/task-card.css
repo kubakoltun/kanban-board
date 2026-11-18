@@ -1,6 +1,4 @@
-/* Task card: title, description, priority, and the action footer.
-   (Badges live in badges.css, timer bits in timers.css, memo in memo.css,
-   subtasks in subtasks.css - this file is just the card's own structure.) */
+/* Task card: title, description, priority, and the action footer */
 .task-card {
     background: var(--card-bg);
     border: 1px solid var(--glass-border);
@@ -15,10 +13,10 @@
     flex-direction: column;
     gap: var(--space-2);
 }
-/* Flex column items can overflow long unbroken text unless forced to
-   shrink - this is what caused text to spill past the card edge. */
+
 .task-card > * {
     min-width: 0;
+    flex-shrink: 0;
 }
 
 .task-id-row,
