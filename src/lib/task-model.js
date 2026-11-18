@@ -1,6 +1,3 @@
-// No DB access here - the server (Drizzle) owns ids/defaults; this file
-// only prepares/validates the data that gets sent over the wire.
-
 export function normalizeTaskSubtasks(subtasks) {
     if (!Array.isArray(subtasks)) return [];
 
@@ -48,11 +45,4 @@ export function startTimer(task, now = Date.now()) {
             endedAt: null, note: '', duration: null
         }
     };
-}
-
-export function sessionState(task) {
-    if (!task.isTracking) return { label: 'Paused', tone: 'paused' };
-    return task.activeMemoSession?.note?.trim()
-        ? { label: 'Recording', tone: 'recording' }
-        : { label: 'Awaiting summary', tone: 'awaiting' };
 }

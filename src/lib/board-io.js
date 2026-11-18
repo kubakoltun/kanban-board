@@ -1,4 +1,5 @@
 import { api } from '../api/client.js';
+import { parseNotionCsv } from './notion-csv.js';
 
 export async function exportBoard() {
     // fetch fresh so the backup never depends on what happens to be cached
@@ -17,6 +18,10 @@ export async function exportBoard() {
 }
 
 export async function readBoardFile(file) {
+    if (file.name.toLowerCase().endsWith('.csv')) {
+        return parseNotionCsv(await file.text());
+    }
+    
     let data;
     try {
         data = JSON.parse(await file.text());

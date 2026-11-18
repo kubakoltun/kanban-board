@@ -9,9 +9,14 @@ export function Header({ onOpen }) {
 
     const onFile = async (e) => {
         const file = e.target.files[0];
-        e.target.value = ''; // lets the same file be picked again later
+        e.target.value = '';
         if (!file) return;
-        if (!window.confirm('Importing replaces every task and history entry on the board. Continue?')) return;
+
+        const isCsv = file.name.toLowerCase().endsWith('.csv');
+        const message = isCsv
+            ? 'Tasks from this CSV will be added to the board. Continue?'
+            : 'Importing replaces every task and history entry on the board. Continue?';
+        if (!window.confirm(message)) return;
 
         try {
             await importBoard.mutateAsync(await readBoardFile(file));

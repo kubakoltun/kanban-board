@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Icon } from './Icon.jsx';
 import { CopyId } from './CopyId.jsx';
-import { useNow } from '../hooks/useNow.js';
-import { formatTime } from '../lib/format.js';
-import { sessionState } from '../lib/task-model.js';
 import {
     useToggleTimer, useSaveMemo, useToggleSubtask, useRemoveSubtask, useAddSubtask, useDeleteTask
 } from '../hooks/queries.js';
@@ -22,31 +19,6 @@ function dueClass(task) {
     if (!Number.isFinite(due)) return '';
     const diff = due - Date.now();
     return diff < 0 ? 'is-overdue' : diff <= MS_IN_DAY ? 'is-due-soon' : '';
-}
-
-function timerLabel(task) {
-    if (task.status === 'done') return 'Timer complete';
-    if (task.status === 'not-started') return 'Not started';
-    return task.isTracking ? 'Running' : 'Paused';
-}
-
-function TimerSection({ task }) {
-    const now = useNow(task.isTracking);
-    const running = task.isTracking && task.lastStartTime ? now - task.lastStartTime : 0;
-    const chip = sessionState(task);
-    const showChip = task.isTracking && task.status !== 'not-started' && task.status !== 'done';
-
-    return (
-        <div className={`task-secondary-row task-timer ${task.isTracking ? 'is-running' : ''}`}>
-            <div className="task-timer-header">
-                <span className={`task-timer-state ${task.isTracking ? 'is-active' : ''}`}>
-                    {task.isTracking && <span className="recording-dot" />}{timerLabel(task)}
-                </span>
-                {showChip && <span className={`session-state-chip session-state-chip--${chip.tone}`}>{chip.label}</span>}
-            </div>
-            <span className="timer-display">{formatTime((task.totalTime || 0) + running)}</span>
-        </div>
-    );
 }
 
 function MemoPanel({ task }) {
@@ -178,8 +150,6 @@ export function TaskCard({ task, meta, onEdit, onLogs }) {
             <div className="task-priority-row">
                 {task.priority && <span className={`badge badge-${task.priority}`}>{task.priority}</span>}
             </div>
-
-            <TimerSection task={task} />
 
             <div className={`task-details ${hasDetails ? '' : 'is-empty'}`} hidden={!expanded}>
                 <div className="task-metadata-bar">
