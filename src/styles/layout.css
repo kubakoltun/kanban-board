@@ -1,6 +1,6 @@
 /* Page chrome: header, filter toolbar, and the board grid/columns */
 header {
-    padding: 1.5rem 3rem;
+    padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -22,12 +22,11 @@ h1 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-
 .toolbar {
     display: grid;
-    grid-template-columns: minmax(200px, 2fr) repeat(5, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 1rem;
-    padding: 1.25rem 3rem 0.5rem;
+    padding: 0.75rem 2rem 0.5rem;
     background: rgba(var(--surface-rgb), 0.2);
     border-bottom: 1px solid var(--glass-border);
 }
@@ -54,7 +53,7 @@ h1 {
 }
 
 main {
-    padding: 1.5rem 3rem 2rem;
+    padding: 1rem 2rem 1rem;
     overflow-x: auto;
     overflow-y: hidden;
     flex: 1;
@@ -66,7 +65,7 @@ main {
     grid-auto-flow: column;
     grid-auto-columns: 420px;
     grid-template-rows: minmax(0, 1fr);   /* row is exactly as tall as the board */
-    gap: 1.5rem;
+    gap: 1rem;
     height: 100%;
     width: max-content;
     min-width: 100%;

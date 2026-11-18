@@ -32,14 +32,16 @@ export function Header({ onOpen }) {
                     <Icon name="analytics" /> Analytics
                 </button>
                 <button id="export-btn" className="btn-secondary" title="Export Board"
-                        onClick={() => exportBoard().catch(err => alert(`Export failed: ${err.message}`))}>
+                    onClick={() => exportBoard().catch(err => alert(`Export failed: ${err.message}`))}
+                >
                     <Icon name="export" /> Export
                 </button>
                 <button id="import-btn-trigger" className="btn-secondary" title="Import Board"
-                        disabled={importBoard.isPending} onClick={() => fileRef.current.click()}>
+                    disabled={importBoard.isPending} onClick={() => fileRef.current.click()}
+                >
                     <Icon name="import" /> Import
                 </button>
-                <input ref={fileRef} type="file" accept=".json" hidden onChange={onFile} />
+                <input ref={fileRef} type="file" accept=".json,.csv" hidden onChange={onFile} />
                 <button id="add-task-btn" onClick={() => onOpen('task')}>
                     <Icon name="plus" /> New Task
                 </button>

@@ -9,12 +9,11 @@ import {
 } from '../hooks/queries.js';
 
 const MS_IN_DAY = 86_400_000;
-const DESCRIPTION_WORD_LIMIT = 6;
+const DESCRIPTION_LETTER_LIMIT = 42;
 
 function shortDescription(text = '') {
-    const words = text.trim().split(/\s+/).filter(Boolean);
-    return words.length > DESCRIPTION_WORD_LIMIT
-        ? `${words.slice(0, DESCRIPTION_WORD_LIMIT).join(' ')}...`
+    return text.length > DESCRIPTION_LETTER_LIMIT
+        ? `${text.slice(0, DESCRIPTION_LETTER_LIMIT)}...`
         : text;
 }
 

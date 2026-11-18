@@ -16,7 +16,8 @@ export function FilterBar({ meta, values, onChange }) {
                                    value={value} onChange={e => onChange(f.key, e.target.value)} />
                         ) : (
                             <select id={id} className={className} value={value}
-                                    onChange={e => onChange(f.key, e.target.value)}>
+                                onChange={e => onChange(f.key, e.target.value)}
+                            >
                                 <option value={f.initial ?? 'all'}>{f.defaultLabel}</option>
                                 {f.options(meta).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                             </select>
