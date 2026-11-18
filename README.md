@@ -17,26 +17,14 @@ The project follows a simple frontend/backend architecture. Both parts are maint
 
 
 ## Tech Stack
-* JavaScript (ES Modules) - application logic and UI behavior
+* JavaScript (ES Modules) - application logic and UI behaviour
+* Express - REST API server
 * HTML - static HTML structure and CRUD interface
 * CSS - styling and responsive layout
 * Vite - frontend development server and production build tool
 * ESLint - JavaScript code linting and consistency checks
-
-The frontend code is located in the src/ directory.
-
-
-## Backend
-* JavaScript (Node.js) - backend runtime
-* Express - REST API server
 * Drizzle ORM - database access and schema management
 * PostgreSQL - persistent data storage
-
-The backend code is located in the server/ directory.
-
-
-## Database
-PostgreSQL is used as the application's persistent storage layer.
 
 Drizzle ORM provides:
 - Database schema definitions
@@ -44,7 +32,9 @@ Drizzle ORM provides:
 - Database migrations
 - Database schema synchronization
 - Database mock
-- Database development tools through Drizzle Studio
+
+The frontend code is located in the src/ directory.
+The backend code is located in the server/ directory.
 
 
 ## Overview  
@@ -61,19 +51,22 @@ The PostgreSQL database must be running before starting the backend.
 #### Install dependencies
 ```bash
 # Install the frontend dependencies from the project root:
+cd src
 npm install
+
+# Back to project root dir
+cd ..
 
 # Then install the backend dependencies:
 cd server
 npm install
-cd ..
 ```
 
 #### Configure the database
 Create a PostgreSQL database and configure the backend connection using environment variables.
 
 For example, create:
-server/.env
+kanban-board/.env
 with the required PostgreSQL connection settings.
 
 A typical configuration might look like:
@@ -88,10 +81,10 @@ cd server
 npm run db:push
 
 # If the project uses migrations instead, migrations can be generated and applied with:
-npm run db:generate
+npm run db:generate db_init
 npm run db:migrate
 
-# To populate the database with initial data:
+# To populate the database with initial mocked users:
 npm run db:mock_user
 ```
 
@@ -107,23 +100,13 @@ npm run dev
 ```
 
 The Vite development server will provide the frontend application, while the Express server handles API requests.
-For convenience, the frontend npm start command is configured as an alias for:
-```bash
-npm run dev
-```
+
 
 ### Containerization
-The project currently contains a Docker image build script:
+App may also be ran as docker container.
 ```bash
-./build-docker-image.sh
+docker compose --build app
 ```
-Docker support covers:
-* Frontend
-* Backend API
-* PostgreSQL
-* Environment configuration
-* Persistent database storage
-
 
 ### Persistent Storage - PostgreSQL
 The application uses PostgreSQL for persistent storage.
@@ -146,7 +129,6 @@ This means that restarting the frontend or backend does not remove the stored Ka
 - Built-in timer per task
 - Start/Pause controls directly inside cards
 - Automatic timer pause when task moves to:
-  * Ready For Review
   * Done
 - Detailed time logs including:
   * Start time
@@ -163,8 +145,6 @@ The history records actions such as:
 * Task deletion
 * Timer events
 * Other relevant task changes
-
-The history view provides color-coded status indicators to make different types of activity easier to identify.
 
 
 ### Export / Import

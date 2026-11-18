@@ -33,7 +33,7 @@ export function parseNotionCsv(text) {
         .map(row => {
             const created = parseNotionDate(row['Created time']);
             const due = parseNotionDate(row['Due date']);
-            // People columns can hold several names: "Anna K, Jakub S" -> take the first
+            // People columns can hold several names - take the first
             const assigneeName = row['Assign']?.split(',')[0].trim() || null;
 
             return {
