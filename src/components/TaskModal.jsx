@@ -13,10 +13,10 @@ function toFormState(task) {
     return {
         title: task?.title ?? '',
         content: task?.content ?? '',
-        url: task?.url ?? '',
         priority: task?.priority || 'medium',
         dueDate: task?.dueDate?.slice(0, 10) ?? '',
         assignedUserId: String(task?.assignedUserId ?? ''),
+        status: String(task?.status ?? 'not-started'),
         tags: task?.tags ?? [],
         subtasks: (task?.subtasks ?? []).map(withKey)
     };
@@ -58,10 +58,10 @@ export function TaskModal({ task = null, meta, onClose }) {
             fields: {
                 title,
                 content,
-                url: form.url.trim(),
                 priority: form.priority,
                 dueDate: form.dueDate || null,
                 assignedUserId: form.assignedUserId ? Number(form.assignedUserId) : null,
+                status: form.status ? String(form.status) : 'not-started',
                 tags: form.tags,
                 subtasks: normalizeTaskSubtasks(form.subtasks)
             }
@@ -71,23 +71,24 @@ export function TaskModal({ task = null, meta, onClose }) {
     return (
         <Modal id="task-modal" onClose={onClose} className="task-modal-content">
             <div className="task-modal-header">
-                <h2 id="modal-title">{task ? 'Edit Task' : 'Add New Task'}</h2>
+                <h2 id="modal-title">{task ? 'Edit task' : 'Add new task'}</h2>
             </div>
             <form id="task-form" onSubmit={submit}>
                 <input type="hidden" id="task-id" value={task?.id ?? ''} readOnly />
                 <div className="task-form-body">
-                    <Field label="Title" htmlFor="task-title">
-                        <input id="task-title" type="text" placeholder="Task title" maxLength={300} required autoFocus {...bind('title')} />
-                    </Field>
-
                     {task && (
                         <Field label="Task ID" htmlFor="task-id-input">
                             <div className="task-id-input-row">
                                 <input id="task-id-input" name="task-id-input" type="text" readOnly
-                                    aria-label="Task ID" value={task.id} onFocus={e => e.target.select()} />
+                                    aria-label="Task ID" value={task.id} onFocus={e => e.target.select()} 
+                                />
                             </div>
                         </Field>
                     )}
+
+                    <Field label="Title" htmlFor="task-title">
+                        <input id="task-title" type="text" placeholder="Task title" maxLength={300} required autoFocus {...bind('title')} />
+                    </Field>
 
                     <Field label="Task Description" htmlFor="task-desc">
                         <textarea id="task-desc" placeholder="What needs to be done?" required {...bind('content')} />
@@ -96,9 +97,9 @@ export function TaskModal({ task = null, meta, onClose }) {
                     <Field label="User" htmlFor="task-assigned-user">
                         <UserSelect id="task-assigned-user" value={form.assignedUserId} onChange={set('assignedUserId')} />
                     </Field>
-
-                    <Field label="Related URL" htmlFor="task-url">
-                        <input id="task-url" type="url" placeholder="https://example.com" {...bind('url')} />
+                    
+                    <Field label="Stage" htmlFor="task-stage-select">
+                        <UserSelect id="task-stage-select" value={form.status} onChange={set('status')} />
                     </Field>
 
                     <div className="form-row">
@@ -152,7 +153,7 @@ export function TaskModal({ task = null, meta, onClose }) {
                 {save.isError && <p className="error">Couldn't save: {save.error.message}</p>}
                 <div className="modal-actions">
                     <button type="button" id="cancel-modal" className="btn-secondary" onClick={onClose}>Cancel</button>
-                    <button type="submit" className="btn-primary" disabled={save.isPending}>Save Task</button>
+                    <button type="submit" className="btn-primary" disabled={save.isPending}>Save task</button>
                 </div>
             </form>
         </Modal>

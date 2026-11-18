@@ -33,7 +33,39 @@
 }
 
 .task-id-row {
-    padding: 0.3rem 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: fit-content;
+    padding: 0.2rem 0.3rem 0.2rem 0.6rem;
+}
+.task-id-text {
+    font-family: 'SF Mono', 'Roboto Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    user-select: all;
+}
+.copy-id-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+.copy-id-btn:hover {
+    background: rgba(var(--text-rgb), 0.12);
+    color: var(--text-color);
+}
+.copy-id-btn.is-copied {
+    color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.15);
 }
 .task-id-input {
     width: 100%;

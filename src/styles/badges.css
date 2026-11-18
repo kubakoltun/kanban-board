@@ -5,8 +5,35 @@
 .badge-high { background: var(--support); color: var(--bg); border-color: var(--support); }
 .badge-date { background: rgba(var(--text-rgb), 0.08); color: var(--text-secondary); text-transform: none; }
 .badge-tag { background: rgba(var(--support-rgb), 0.12); color: var(--support); text-transform: lowercase; }
-.badge-assignee { background: rgba(var(--primary-rgb), 0.15); color: var(--primary); text-transform: none; }
-.badge-unassigned { background: rgba(var(--text-rgb), 0.08); color: var(--text-secondary); text-transform: none; }
+.badge-assignee { 
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(var(--primary-rgb), 0.15); 
+    color: black;
+    padding: 3px 10px 3px 3px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: none;
+}
+.assignee-avatar {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+.badge-unassigned { 
+    background: rgba(var(--text-rgb), 0.08); 
+    color: var(--text-secondary); 
+    text-transform: none;
+    font-size: 0.78rem;
+}
 
 .task-metadata-bar { display: flex; flex-wrap: wrap; gap: var(--space-1); }
 

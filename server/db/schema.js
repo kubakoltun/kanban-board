@@ -25,8 +25,7 @@ export const tasks = pgTable('tasks', {
     // Core content
     title: text('title').notNull(),
     content: text('content').notNull(),
-    url: text('url').default(''),
-    status: text('status').notNull().default('todo'),
+    status: text('status').notNull().default('not-started'),
     priority: text('priority').notNull().default('medium'),
     dueDate: date('due_date'),
     tags: jsonb('tags').notNull().default([]),

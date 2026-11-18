@@ -24,9 +24,8 @@
     background: var(--bg);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
-    padding: 2rem;
+    padding: 1rem;
     width: 90%;
-    max-width: 500px;
     box-shadow: var(--shadow-lg);
     transform: scale(0.95);
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);

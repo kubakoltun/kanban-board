@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Icon } from './Icon.jsx';
+import { CopyId } from './CopyId.jsx';
 import { useNow } from '../hooks/useNow.js';
 import { formatTime } from '../lib/format.js';
 import { sessionState } from '../lib/task-model.js';
@@ -18,7 +19,7 @@ function dueClass(task) {
 
 function timerLabel(task) {
     if (task.status === 'done') return 'Timer complete';
-    if (task.status === 'todo') return 'Not started';
+    if (task.status === 'not-started') return 'Not started';
     return task.isTracking ? 'Running' : 'Paused';
 }
 
@@ -26,7 +27,7 @@ function TimerSection({ task }) {
     const now = useNow(task.isTracking);
     const running = task.isTracking && task.lastStartTime ? now - task.lastStartTime : 0;
     const chip = sessionState(task);
-    const showChip = task.isTracking && task.status !== 'todo' && task.status !== 'done';
+    const showChip = task.isTracking && task.status !== 'not-started' && task.status !== 'done';
 
     return (
         <div className={`task-secondary-row task-timer ${task.isTracking ? 'is-running' : ''}`}>
@@ -111,10 +112,11 @@ function Subtasks({ task }) {
                     <ul className="subtask-preview-list">
                         {subtasks.slice(0, 3).map(s => (
                             <li key={s.id} className={`subtask-preview-item ${s.done ? 'is-done' : ''}`}>
-                                <button className="subtask-toggle-btn" title="Toggle subtask"
-                                        onClick={() => toggle.mutate({ id: task.id, subtaskId: s.id })}>{s.done ? '✓' : '○'}</button>
-                                <span className="subtask-preview-text">{s.text}</span>
-                                <button className="subtask-remove-btn" title="Remove subtask"
+                                <button className="subtask-toggle-btn" aria-pressed={s.done}
+                                        title={s.done ? 'Mark as not done' : 'Mark as done'}
+                                        onClick={() => toggle.mutate({ id: task.id, subtaskId: s.id })}>{s.done ? '✓' : ''}</button>
+                                <span className="subtask-preview-text" title={s.text}>{s.text}</span>
+                                <button className="subtask-remove-btn" title="Remove subtask" aria-label="Remove subtask"
                                         onClick={() => remove.mutate({ id: task.id, subtaskId: s.id })}>×</button>
                             </li>
                         ))}
@@ -137,8 +139,12 @@ export function TaskCard({ task, meta, onEdit, onLogs }) {
     const timer = useToggleTimer();
     const del = useDeleteTask();
     const assignee = meta.users.find(u => u.id === task.assignedUserId);
-    const canTime = task.status !== 'todo' && task.status !== 'done';
-    const hasDetails = Boolean(task.url || task.dueDate || task.tags?.length || task.subtasks?.length || task.isTracking);
+    const canTime = task.status !== 'not-started' && task.status !== 'done';
+    const hasDetails = Boolean(task.dueDate || task.tags?.length || task.subtasks?.length || task.isTracking);
+
+    const initials = assignee
+        ? `${assignee.name?.[0] ?? ''}${assignee.surname?.[0] ?? ''}`.toUpperCase()
+        : '';
 
     return (
         <div
@@ -149,28 +155,26 @@ export function TaskCard({ task, meta, onEdit, onLogs }) {
             onDragEnd={e => e.currentTarget.classList.remove('dragging')}
             onDoubleClick={e => { if (!e.target.closest('button, input, textarea, a, .task-details')) onEdit(task); }}
         >
-            <div className="task-id-row">
-                <input 
-                    className="task-id-input" 
-                    value={task.id} readOnly aria-label="Task ID"
-                    onClick={e => e.currentTarget.select()} 
-                />
-            </div>
+            <CopyId id={task.id} />
             <div className="task-title-row"><div className="task-title">{task.title}</div></div>
-            <p className="task-description">{task.content}</p>
+            <p className="task-description" title={task.content}>{task.content}</p>
+            <div className="task-priority-row">
+                {assignee ? 
+                    <span className="badge badge-assignee" title={`${assignee.name} ${assignee.surname}`}>
+                        <span className="assignee-avatar">{initials}</span>
+                        {assignee.name} {assignee.surname}
+                    </span>
+                    : 
+                    <span className="badge badge-unassigned">Unassigned</span>
+                }
+            </div>
             <div className="task-priority-row">
                 {task.priority && <span className={`badge badge-${task.priority}`}>{task.priority}</span>}
-                {assignee
-                    ? <span className="badge badge-assignee">{assignee.name} {assignee.surname}</span>
-                    : <span className="badge badge-unassigned">Unassigned</span>}
             </div>
 
             <TimerSection task={task} />
 
             <div className={`task-details ${hasDetails ? '' : 'is-empty'}`} hidden={!expanded}>
-                {task.url && (
-                    <a className="task-link" href={task.url} target="_blank" rel="noopener noreferrer">{task.url}</a>
-                )}
                 <div className="task-metadata-bar">
                     {!task.dueDate && !task.tags?.length && <span className="task-muted">No metadata added</span>}
                     {task.dueDate && <span className="badge badge-date">{new Date(task.dueDate).toLocaleDateString()}</span>}

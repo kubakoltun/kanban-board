@@ -20,7 +20,7 @@ export function useMoveTask() {
         scope: SCOPE,
         mutationFn: async ({ task, status }) => {
             const fresh = findTask(qc, task.id) ?? task;
-            const stopping = (status === 'done' || status === 'todo') && fresh.isTracking;
+            const stopping = (status === 'done' || status === 'not-started') && fresh.isTracking;
             const next = {
                 ...(stopping ? stopTimer(fresh) : fresh),
                 status,

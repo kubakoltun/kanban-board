@@ -4,7 +4,6 @@ export function toTaskValues(f) {
     return {
         title: f.title,
         content: f.content,
-        url: f.url || '',
         status: f.status || 'todo',
         priority: f.priority || 'medium',
         dueDate: f.dueDate || null,
