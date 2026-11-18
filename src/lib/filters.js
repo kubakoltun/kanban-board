@@ -11,6 +11,10 @@ const DUE_OPTIONS = [
     { value: 'no-date', label: 'No due date' }
 ];
 
+// Rank per priority key. Missing priority counts as 'medium', same as the priority filter.
+const PRIORITY_RANK = { low: 0, medium: 1, high: 2 };
+const rankOf = (t) => PRIORITY_RANK[t.priority || 'medium'] ?? PRIORITY_RANK.medium;
+
 function matchesDue(task, v) {
     if (v === 'no-date') return !task.dueDate;
     if (!task.dueDate) return false;
@@ -22,7 +26,7 @@ function matchesDue(task, v) {
 }
 
 // One entry = one toolbar control + its matching logic.
-// Adding a filter means adding an object here and nothing else.
+// Adding a filter means adding an object here
 export const FILTERS = [
     {
         key: 'search', type: 'text', label: 'Search', placeholder: 'Search tasks or tags...', initial: '',
@@ -60,17 +64,23 @@ export const FILTERS = [
         match: matchesDue
     },
     {
-        key: 'sort', label: 'Sort by due date', defaultLabel: 'Default order', initial: 'none',
+        key: 'sort', label: 'Sort by priority', defaultLabel: 'Default order', initial: 'none',
         options: () => [
-            { value: 'asc', label: 'Due date ascending' },
-            { value: 'desc', label: 'Due date descending' }
+            { value: 'desc', label: 'Highest priority first' },
+            { value: 'asc', label: 'Lowest priority first' }
         ],
         sort: (a, b, dir) => {
-            if (!a.dueDate && !b.dueDate) return 0;
-            if (!a.dueDate) return 1;
-            if (!b.dueDate) return -1;
-            const diff = parseDate(a.dueDate) - parseDate(b.dueDate);
-            return dir === 'desc' ? -diff : diff;
+            const diff = rankOf(a) - rankOf(b);
+            if (diff) return dir === 'desc' ? -diff : diff;
+
+            // same priority: soonest due date first, undated last, then oldest first
+            if (a.dueDate && b.dueDate) {
+                const d = parseDate(a.dueDate) - parseDate(b.dueDate);
+                if (d) return d;
+            } else if (a.dueDate || b.dueDate) {
+                return a.dueDate ? -1 : 1;
+            }
+            return new Date(a.createdAt) - new Date(b.createdAt);
         }
     }
 ];
@@ -87,6 +97,7 @@ export function applyFilters(tasks, values) {
 
 export function applySort(tasks, values) {
     const f = FILTERS.find(f => f.sort);
-    const v = values[f.key];
-    return isActive(f, v) ? [...tasks].sort((a, b) => f.sort(a, b, v)) : tasks;
+    const dir = values[f.key];
+    if (dir !== 'asc' && dir !== 'desc') return tasks;
+    return [...tasks].sort((a, b) => f.sort(a, b, dir));
 }
